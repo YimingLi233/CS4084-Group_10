@@ -17,16 +17,3 @@ Feature 4: Playlist Management
 
 Description: Develop functionality for users to create, edit, and delete playlists.
 
-Feature 5: Notifications for New Releases
-
-Description: Notify users about new releases from their favorite artists or genres.
-
-Feature 6: User Profiles and Social Features
-
-Description: Allow users to create profiles, follow other users, and share playlists.
-
-Feature 7: Favorite Songs and Artists
-Description: Allow users to mark songs and artists as favorites.
-
-Feature 8: Search Functionality
-Description: Enable users to search for songs, artists, or albums.
