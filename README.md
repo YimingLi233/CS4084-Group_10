@@ -1,5 +1,6 @@
 # Android-demo-repository
 Group_10_Melody_Match
+Team group project
 
 Feature 1: User Profile and Onboarding
 

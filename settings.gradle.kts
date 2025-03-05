@@ -20,5 +20,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Group_10_Melody_Match"
+//rootProject.name = "group_10_melody_match"
 include(":app")
  

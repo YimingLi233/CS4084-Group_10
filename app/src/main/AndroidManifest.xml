@@ -13,7 +13,10 @@
         android:theme="@style/Theme.Group_10_Melody_Match"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".MainActivity"/>
+
+        <activity
+            android:name=".ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.activity.AddArtistActivity"
+            android:exported="false"
+            android:label="@string/add_artist" />
     </application>
 
 </manifest>
