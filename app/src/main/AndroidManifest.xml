@@ -10,8 +10,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Group_10_Melody_Match"
+        android:theme="@style/Theme.group_10_melody_match"
         tools:targetApi="31">
+        <!--        android:theme="@style/Theme.Group_10_Melody_Match"-->
+
         <activity
             android:name=".MainActivity"/>
 

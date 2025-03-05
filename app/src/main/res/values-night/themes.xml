@@ -1,7 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+<!--    this is main-->
 <!--    <style name="Base.Theme.Group_10_Melody_Match" parent="Theme.Material3.DayNight.NoActionBar">-->
-    <style name="Base.Theme.SimpleSpotify" parent="Theme.Material3.DayNight.NoActionBar">
+<!--    <style name="Base.Theme.SimpleSpotify" parent="Theme.Material3.DayNight.NoActionBar">-->
+<!--    this is feature1 -->
+    <style name="Base.Theme.group_10_melody_match" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>

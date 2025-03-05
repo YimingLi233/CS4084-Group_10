@@ -28,7 +28,7 @@ public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
     // Database name
-    private static final String DATABASE_NAME = "spotify_db";
+    private static final String DATABASE_NAME = "group_10_melody_match_db";
 
     // Thread pool for background operations
     private static final ExecutorService databaseWriteExecutor =
