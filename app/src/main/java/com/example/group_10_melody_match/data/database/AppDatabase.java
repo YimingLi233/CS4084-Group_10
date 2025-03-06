@@ -50,7 +50,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             .addCallback(sRoomDatabaseCallback)
                             // Allow database operations on main thread (for simple demo only)
                             .allowMainThreadQueries()
-                            .fallbackToDestructiveMigration()
+                            .fallbackToDestructiveMigration()//Don't delete this. It has to do with database.
                             .build();
                 }
             }
