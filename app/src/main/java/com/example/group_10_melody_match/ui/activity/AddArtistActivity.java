@@ -116,6 +116,15 @@ public class AddArtistActivity extends AppCompatActivity implements AvailableArt
      */
     @Override
     public void onArtistAdd(AvailableArtist availableArtist) {
+        // Check if artist already exists
+        if (artistRepository.artistExists(availableArtist.getName())) {
+            // Show error message
+            Toast.makeText(this, 
+                getString(R.string.artist_already_exists, availableArtist.getName()), 
+                Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // Convert AvailableArtist to Artist
         Artist artist = new Artist(
                 0, // ID will be auto-generated

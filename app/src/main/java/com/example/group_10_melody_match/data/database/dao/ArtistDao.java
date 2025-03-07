@@ -45,4 +45,10 @@ public interface ArtistDao {
      */
     @Query("DELETE FROM artists")
     void deleteAll();
+
+    /**
+     * Check if artist exists by name
+     */
+    @Query("SELECT COUNT(*) FROM artists WHERE name = :name")
+    int getArtistCountByName(String name);
 }
