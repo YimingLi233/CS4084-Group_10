@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">Group_10_Melody_Match</string>
+<!--    <string name="app_name">Group_10_Melody_Match</string>-->
+<!--    <string name="app_name">SimpleSpotify</string>-->
+    <string name="app_name">group_10_melody_match</string>
+    <string name="artist_name">Artist Name</string>
+    <string name="artist_genre">Music Genre</string>
+    <string name="artist_image">Artist Image</string>
+    <string name="library">Music Library</string>
+    <string name="favorite_artists">Favorite Artists</string>
+    <string name="reset_data">Reset Data</string>
+    <string name="data_reset">Data has been reset</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="add_artist">Add Artist</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Enter artist name</string>
+    <string name="available_artists">Available Artists</string>
+    <string name="artist_added">Artist added to favorites</string>
+    <string name="artist_removed">Artist removed from favorites</string>
 </resources>

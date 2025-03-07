@@ -8,12 +8,60 @@
     tools:context=".MainActivity">
 
     <TextView
+
+        android:id="@+id/title_library"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!\n My name is Yiming Li.\n My name is Ping Lin.\n My name is Stephen O'Brien.\n My name is Yuexi Chen."
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/library"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/reset_data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/title_library"
+        app:layout_constraintBottom_toBottomOf="@+id/title_library" />
+
+    <TextView
+        android:id="@+id/subtitle_favorite_artists"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/favorite_artists"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_library" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_artists"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/subtitle_favorite_artists"
+        tools:listitem="@layout/item_artist" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/add_artist"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
