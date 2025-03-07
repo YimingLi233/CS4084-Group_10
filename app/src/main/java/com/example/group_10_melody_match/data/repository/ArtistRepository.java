@@ -72,4 +72,19 @@ public class ArtistRepository {
             artistDao.deleteAll();
         });
     }
+
+    /**
+     * Check if artist exists
+     */
+    public boolean artistExists(String name) {
+        // Using a simple way to get the result synchronously
+        try {
+            return executorService.submit(() -> 
+                artistDao.getArtistCountByName(name) > 0
+            ).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
