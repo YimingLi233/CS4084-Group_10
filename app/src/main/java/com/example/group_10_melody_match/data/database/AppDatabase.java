@@ -7,6 +7,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.lifecycle.LiveData;
 
 import com.example.group_10_melody_match.data.database.dao.ArtistDao;
 import com.example.group_10_melody_match.data.database.dao.AvailableArtistDao;
@@ -21,7 +22,7 @@ import java.util.concurrent.Executors;
 /**
  * Room Database class
  */
-@Database(entities = {Artist.class, AvailableArtist.class}, version = 1, exportSchema = false)
+@Database(entities = { Artist.class, AvailableArtist.class }, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     // Singleton pattern
@@ -31,11 +32,11 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "group_10_melody_match_db";
 
     // Thread pool for background operations
-    private static final ExecutorService databaseWriteExecutor =
-            Executors.newFixedThreadPool(4);
+    private static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(4);
 
     // Get DAOs
     public abstract ArtistDao artistDao();
+
     public abstract AvailableArtistDao availableArtistDao();
 
     /**
@@ -48,9 +49,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, DATABASE_NAME)
                             .addCallback(sRoomDatabaseCallback)
-                            // Allow database operations on main thread (for simple demo only)
-                            .allowMainThreadQueries()
-                            .fallbackToDestructiveMigration()//Don't delete this. It has to do with database.
+                            .fallbackToDestructiveMigration()// Don't delete this. It has to do with database.
                             .build();
                 }
             }
@@ -136,4 +135,4 @@ public abstract class AppDatabase extends RoomDatabase {
         // Insert initial data
         availableArtistDao.insertAll(availableArtists);
     }
-} 
+}
