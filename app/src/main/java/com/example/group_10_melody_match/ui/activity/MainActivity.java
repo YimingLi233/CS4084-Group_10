@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,24 +33,34 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        
+
         // Set window insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        
+
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.recycler_view_artists);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        
+
         // Initialize data repository
         artistRepository = new ArtistRepository(getApplication());
-        
+
+        // Initialize the adapter with an empty list
+        adapter = new ArtistAdapter(this, new ArrayList<>(), this);
+        recyclerView.setAdapter(adapter);
+
         // Set reset button click event
         findViewById(R.id.btn_reset).setOnClickListener(v -> resetDatabase());
-        
+
+        // Observe LiveData from repository
+        artistRepository.getAllArtists().observe(this, artists -> {
+            // Update the RecyclerView when data changes
+            adapter.updateData(artists);
+        });
+
         // Set add artist button
         fabAddArtist = findViewById(R.id.fab_add_artist);
         fabAddArtist.setOnClickListener(v -> {
@@ -57,51 +68,22 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
             Intent intent = new Intent(MainActivity.this, AddArtistActivity.class);
             startActivity(intent);
         });
-        
-        // Load artist data
-        loadArtists();
     }
-    
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Reload data each time the activity is resumed to show possible changes
-        loadArtists();
-    }
-    
-    /**
-     * Load artist data
-     */
-    private void loadArtists() {
-        // Get all artists
-        List<Artist> artists = artistRepository.getAllArtists();
-        
-        // Set adapter
-        if (adapter == null) {
-            adapter = new ArtistAdapter(this, artists, this);
-            recyclerView.setAdapter(adapter);
-        } else {
-            adapter.updateData(artists);
-        }
-    }
-    
+
     /**
      * Reset database to initial state
      */
     private void resetDatabase() {
         // Delete all favorite artists
         artistRepository.deleteAllArtists();
-        
+
         // Re-add initial data
         addInitialArtists();
-        
-        // Reload data
-        loadArtists();
-        
+
         // Show notification
         Toast.makeText(this, R.string.data_reset, Toast.LENGTH_SHORT).show();
     }
-    
+
     /**
      * Add initial artist data
      */
@@ -111,11 +93,11 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
         artists.add(new Artist(0, "Taylor Swift", "Pop", "taylor_swift"));
         artists.add(new Artist(0, "Ed Sheeran", "Pop", "ed_sheeran"));
         artists.add(new Artist(0, "Billie Eilish", "Pop/Alternative", "billie_eilish"));
-        
+
         // Batch insert artist data
         artistRepository.insertAll(artists);
     }
-    
+
     /**
      * Callback when an artist is removed
      */
@@ -123,11 +105,8 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     public void onArtistRemove(Artist artist) {
         // Delete artist from database
         artistRepository.delete(artist);
-        
-        // Reload data
-        loadArtists();
-        
+
         // Show notification
         Toast.makeText(this, R.string.artist_removed, Toast.LENGTH_SHORT).show();
     }
-} 
+}
