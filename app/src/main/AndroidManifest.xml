@@ -12,11 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.group_10_melody_match"
         tools:targetApi="31">
-        <!--        android:theme="@style/Theme.Group_10_Melody_Match"-->
-
         <activity
-            android:name=".MainActivity"/>
-
+            android:name=".ui.activity.SongListActivity"
+            android:exported="false" />
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true">
@@ -26,11 +25,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.AddArtistActivity"
             android:exported="false"
             android:label="@string/add_artist" />
+        <activity
+            android:name=".ui.activity.SongPlayActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

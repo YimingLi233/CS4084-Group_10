@@ -78,12 +78,14 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
         
         // Set adapter
         if (adapter == null) {
-            adapter = new ArtistAdapter(this, artists, this);
+            adapter = new ArtistAdapter(this, artists, this); // 传递 `this` 作为 `OnArtistClickListener`
             recyclerView.setAdapter(adapter);
         } else {
             adapter.updateData(artists);
         }
     }
+
+
     
     /**
      * Reset database to initial state
@@ -130,4 +132,6 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
         // Show notification
         Toast.makeText(this, R.string.artist_removed, Toast.LENGTH_SHORT).show();
     }
+
+
 } 
