@@ -68,7 +68,36 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
             Intent intent = new Intent(MainActivity.this, AddArtistActivity.class);
             startActivity(intent);
         });
+        
+        // Load artist data
+        loadArtists();
     }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reload data each time the activity is resumed to show possible changes
+        loadArtists();
+    }
+    
+    /**
+     * Load artist data
+     */
+    private void loadArtists() {
+        artistRepository.getAllArtists().observe(this, artists -> {
+            // 确保数据不为空
+            if (artists != null) {
+                if (adapter == null) {
+                    adapter = new ArtistAdapter(this, artists, this);
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    adapter.updateData(artists);
+                }
+            }
+        });
+    }
+
+
 
     /**
      * Reset database to initial state
@@ -80,10 +109,13 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
         // Re-add initial data
         addInitialArtists();
 
+        // Reload data
+        loadArtists();
+
         // Show notification
         Toast.makeText(this, R.string.data_reset, Toast.LENGTH_SHORT).show();
     }
-
+    
     /**
      * Add initial artist data
      */
@@ -93,11 +125,11 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
         artists.add(new Artist(0, "Taylor Swift", "Pop", "taylor_swift"));
         artists.add(new Artist(0, "Ed Sheeran", "Pop", "ed_sheeran"));
         artists.add(new Artist(0, "Billie Eilish", "Pop/Alternative", "billie_eilish"));
-
+        
         // Batch insert artist data
         artistRepository.insertAll(artists);
     }
-
+    
     /**
      * Callback when an artist is removed
      */
@@ -105,6 +137,9 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
     public void onArtistRemove(Artist artist) {
         // Delete artist from database
         artistRepository.delete(artist);
+
+        // Reload data
+        loadArtists();
 
         // Show notification
         Toast.makeText(this, R.string.artist_removed, Toast.LENGTH_SHORT).show();

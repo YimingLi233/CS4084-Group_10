@@ -1,6 +1,6 @@
 <resources>
-<!--    <string name="app_name">Group_10_Melody_Match</string>-->
-<!--    <string name="app_name">SimpleSpotify</string>-->
+    <!--    <string name="app_name">Group_10_Melody_Match</string>-->
+    <!--    <string name="app_name">SimpleSpotify</string>-->
     <string name="app_name">group_10_melody_match</string>
     <string name="artist_name">Artist Name</string>
     <string name="artist_genre">Music Genre</string>
