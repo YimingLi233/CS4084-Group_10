@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 /**
  * Room Database class
  */
-@Database(entities = {Artist.class, AvailableArtist.class, Song.class}, version = 1, exportSchema = false)
+@Database(entities = {Artist.class, AvailableArtist.class, Song.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     // Singleton pattern
@@ -147,8 +147,8 @@ public abstract class AppDatabase extends RoomDatabase {
         songDao.deleteAll();
 
         List<Song> songs = new ArrayList<>();
-        songs.add(new Song(0, "Love Story", "Taylor Swift", R.raw.ding));
-        songs.add(new Song(0, "Invalid", "Taylor Swift", R.raw.invalid));
+        songs.add(new Song(0, "Love Story", 0, R.raw.ding));
+        songs.add(new Song(0, "Invalid", 0, R.raw.invalid));
 
         songDao.insertAll(songs);
     }

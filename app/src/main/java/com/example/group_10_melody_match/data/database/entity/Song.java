@@ -11,20 +11,20 @@ public class Song implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int sId;
     private String sName;
-    private String songArtist;
+    private int artistId;
     private int resourceID;
 
-    public Song(int sId, String sName, String songArtist, int resourceID) {
+    public Song(int sId, String sName, int artistId, int resourceID) {
         this.sId = sId;
         this.sName = sName;
-        this.songArtist = songArtist;
+        this.artistId = artistId;
         this.resourceID = resourceID;
     }
 
     protected Song(Parcel in) {
         sId = in.readInt();
         sName = in.readString();
-        songArtist = in.readString();
+        artistId = in.readInt();
         resourceID = in.readInt();
     }
 
@@ -49,7 +49,7 @@ public class Song implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(sId);
         dest.writeString(sName);
-        dest.writeString(songArtist);
+        dest.writeInt(artistId);
         dest.writeInt(resourceID);
     }
     public int getSId() {
@@ -68,12 +68,12 @@ public class Song implements Parcelable {
         this.sName = sName;
     }
 
-    public String getSongArtist() {
-        return songArtist;
+    public int getArtistId() {
+        return artistId;
     }
 
-    public void setSongArtist(String songArtist) {
-        this.songArtist = songArtist;
+    public void setArtistId(int artistId) {
+        this.artistId = artistId;
     }
 
     public int getResourceID() {
@@ -90,7 +90,7 @@ public class Song implements Parcelable {
         return "Songs{" +
                 "sId=" + sId +
                 ", sName='" + sName + '\'' +
-                ", songArtist=" + songArtist +
+                ", artistId=" + artistId +
                 ", resourceID=" + resourceID +
                 '}';
     }

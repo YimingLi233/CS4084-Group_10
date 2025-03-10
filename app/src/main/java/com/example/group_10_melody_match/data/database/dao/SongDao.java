@@ -24,7 +24,7 @@ public interface SongDao {
     @Query("SELECT * FROM songs ORDER BY sName ASC")
     List<Song> getAllSongs();
 
-    @Query("SELECT * FROM songs WHERE sId = :artistId")
+    @Query("SELECT * FROM songs WHERE artistId = :artistId")
     List<Song> getSongsByArtistId(int artistId);
 
     @Delete

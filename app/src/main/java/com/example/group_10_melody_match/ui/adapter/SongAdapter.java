@@ -36,7 +36,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     public void onBindViewHolder(@NonNull SongViewHolder holder, int position) {
         Song song = songList.get(position);
         holder.songName.setText(song.getSName());  // ✅ 确保正确显示数据库中的 sName
-        holder.songArtist.setText(song.getSongArtist());  // ✅ 确保正确显示数据库中的 songArtist
+        holder.songArtist.setText(song.getArtistId());  // ✅ 确保正确显示数据库中的 songArtist
 
         holder.itemView.setOnClickListener(v -> {
             // 这里可以写播放歌曲的逻辑
@@ -51,9 +51,16 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
     // ✅ 新增方法：用于刷新数据
     public void updateData(List<Song> newSongs) {
+        // test log
+//        if (newSongs == null || newSongs.isEmpty()) {
+//            Log.e("SongAdapter", "updateData: Received empty song list!"); // 🚨 重要日志
+//        } else {
+//            Log.d("SongAdapter", "updateData: Loaded " + newSongs.size() + " songs."); // ✅ 正常数据
+//        }
         this.songList = newSongs;
         notifyDataSetChanged();
     }
+
 
     public static class SongViewHolder extends RecyclerView.ViewHolder {
         TextView songName;
