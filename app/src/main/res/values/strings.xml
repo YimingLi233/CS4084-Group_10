@@ -15,6 +15,6 @@
     <string name="search">Search</string>
     <string name="search_hint">Enter artist name</string>
     <string name="available_artists">Available Artists</string>
-    <string name="artist_added">Artist added to favorites</string>
+    <string name="artist_added">%s added to favorites</string>
     <string name="artist_removed">Artist removed from favorites</string>
 </resources>
