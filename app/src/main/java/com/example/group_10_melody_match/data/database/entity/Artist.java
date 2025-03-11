@@ -13,12 +13,14 @@ public class Artist {
     private String name;
     private String genre;
     private String imageUrl;
+    private boolean isFavorite;
 
     public Artist(int id, String name, String genre, String imageUrl) {
         this.id = id;
         this.name = name;
         this.genre = genre;
         this.imageUrl = imageUrl;
+        this.isFavorite = false;  // Default to false
     }
 
     public int getId() {
@@ -51,5 +53,13 @@ public class Artist {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 } 

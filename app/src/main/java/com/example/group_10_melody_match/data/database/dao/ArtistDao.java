@@ -51,4 +51,22 @@ public interface ArtistDao {
      */
     @Query("SELECT COUNT(*) FROM artists WHERE name = :name")
     int getArtistCountByName(String name);
+
+    /**
+     * Check if artist is favorite by name
+     */
+    @Query("SELECT COUNT(*) FROM artists WHERE name = :name AND isFavorite = 1")
+    int getFavoriteCountByName(String name);
+
+    /**
+     * Update favorite status by artist name
+     */
+    @Query("UPDATE artists SET isFavorite = :isFavorite WHERE name = :name")
+    void updateFavoriteStatusByName(String name, boolean isFavorite);
+
+    /**
+     * Get favorite artists
+     */
+    @Query("SELECT * FROM artists WHERE isFavorite = 1 ORDER BY name ASC")
+    LiveData<List<Artist>> getFavoriteArtists();
 }
