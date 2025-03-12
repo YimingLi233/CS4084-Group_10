@@ -80,6 +80,15 @@ public class MainActivity extends AppCompatActivity implements ArtistAdapter.OnA
 
         // Show notification
         Toast.makeText(this, R.string.data_reset, Toast.LENGTH_SHORT).show();
+        
+        // Force UI refresh after a delay to ensure database operations are complete
+        recyclerView.postDelayed(() -> {
+            // This will force the adapter to refresh its data
+            adapter.notifyDataSetChanged();
+            
+            // Additionally, we can force the RecyclerView to redraw
+            recyclerView.invalidate();
+        }, 500); // 500ms delay
     }
 
     /**

@@ -5,8 +5,10 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import com.example.group_10_melody_match.data.database.entity.Artist;
+import com.example.group_10_melody_match.data.model.ArtistWithGenres;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public interface ArtistDao {
      * Insert a single artist
      */
     @Insert
-    void insert(Artist artist);
+    long insert(Artist artist);
 
     /**
      * Insert multiple artists
@@ -33,6 +35,12 @@ public interface ArtistDao {
      */
     @Query("SELECT * FROM artists ORDER BY name ASC")
     LiveData<List<Artist>> getAllArtists();
+
+    /**
+     * Get all artists, sorted by name (non-LiveData version)
+     */
+    @Query("SELECT * FROM artists ORDER BY name ASC")
+    List<Artist> getAllArtistsSync();
 
     /**
      * Delete a single artist
@@ -69,4 +77,36 @@ public interface ArtistDao {
      */
     @Query("SELECT * FROM artists WHERE isFavorite = 1 ORDER BY name ASC")
     LiveData<List<Artist>> getFavoriteArtists();
+    
+    /**
+     * Get favorite artists (non-LiveData version)
+     */
+    @Query("SELECT * FROM artists WHERE isFavorite = 1 ORDER BY name ASC")
+    List<Artist> getFavoriteArtistsSync();
+    
+    /**
+     * Get artist by name
+     */
+    @Query("SELECT * FROM artists WHERE name = :name LIMIT 1")
+    Artist getArtistByName(String name);
+    
+    /**
+     * Get artist by ID
+     */
+    @Query("SELECT * FROM artists WHERE id = :id LIMIT 1")
+    Artist getArtistById(int id);
+    
+    /**
+     * Get all artists with their genres
+     */
+    @Transaction
+    @Query("SELECT * FROM artists ORDER BY name ASC")
+    LiveData<List<ArtistWithGenres>> getArtistsWithGenres();
+    
+    /**
+     * Get artist with genres by ID
+     */
+    @Transaction
+    @Query("SELECT * FROM artists WHERE id = :artistId")
+    LiveData<ArtistWithGenres> getArtistWithGenresById(int artistId);
 }
