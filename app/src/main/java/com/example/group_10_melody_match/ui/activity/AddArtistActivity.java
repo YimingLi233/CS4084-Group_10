@@ -13,9 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.group_10_melody_match.R;
 import com.example.group_10_melody_match.data.database.entity.Artist;
-import com.example.group_10_melody_match.data.database.entity.AvailableArtist;
 import com.example.group_10_melody_match.data.repository.ArtistRepository;
-import com.example.group_10_melody_match.data.repository.AvailableArtistRepository;
 import com.example.group_10_melody_match.ui.adapter.AvailableArtistAdapter;
 
 import java.util.ArrayList;
@@ -25,7 +23,6 @@ import java.util.List;
  * Add Artist Activity
  */
 public class AddArtistActivity extends AppCompatActivity implements AvailableArtistAdapter.OnArtistAddListener {
-    private AvailableArtistRepository availableArtistRepository;
     private ArtistRepository artistRepository;
     private RecyclerView recyclerView;
     private AvailableArtistAdapter adapter;
@@ -41,8 +38,7 @@ public class AddArtistActivity extends AppCompatActivity implements AvailableArt
         recyclerView = findViewById(R.id.recycler_view_available_artists);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize repositories
-        availableArtistRepository = new AvailableArtistRepository(getApplication());
+        // Initialize repository
         artistRepository = new ArtistRepository(getApplication());
 
         // Initialize adapter with empty list
@@ -89,7 +85,14 @@ public class AddArtistActivity extends AppCompatActivity implements AvailableArt
      */
     private void loadAvailableArtists() {
         // Observe the LiveData from the repository
-        availableArtistRepository.getAllAvailableArtists().observe(this, availableArtists -> {
+        artistRepository.getAllArtists().observe(this, artists -> {
+            // Filter out favorite artists
+            List<Artist> availableArtists = new ArrayList<>();
+            for (Artist artist : artists) {
+                if (!artist.isFavorite()) {
+                    availableArtists.add(artist);
+                }
+            }
             // Update the adapter with the new data
             adapter.updateData(availableArtists);
         });
@@ -103,8 +106,16 @@ public class AddArtistActivity extends AppCompatActivity implements AvailableArt
             // If search is empty, show all artists
             loadAvailableArtists();
         } else {
-            // Observe the search results LiveData
-            availableArtistRepository.searchAvailableArtists(query).observe(this, searchResults -> {
+            // Observe the LiveData from the repository
+            artistRepository.getAllArtists().observe(this, artists -> {
+                // Filter out favorite artists and search by name
+                List<Artist> searchResults = new ArrayList<>();
+                for (Artist artist : artists) {
+                    if (!artist.isFavorite() && 
+                        artist.getName().toLowerCase().contains(query.toLowerCase())) {
+                        searchResults.add(artist);
+                    }
+                }
                 // Update the adapter with the search results
                 adapter.updateData(searchResults);
             });
@@ -115,25 +126,18 @@ public class AddArtistActivity extends AppCompatActivity implements AvailableArt
      * Callback when an artist is added
      */
     @Override
-    public void onArtistAdd(AvailableArtist availableArtist) {
-        // Check if artist already exists
-        if (artistRepository.artistExists(availableArtist.getName())) {
+    public void onArtistAdd(Artist artist) {
+        // Check if artist is already favorite
+        if (artistRepository.isArtistFavorite(artist.getName())) {
             // Show error message
             Toast.makeText(this, 
-                getString(R.string.artist_already_exists, availableArtist.getName()), 
+                getString(R.string.artist_already_exists, artist.getName()), 
                 Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Convert AvailableArtist to Artist
-        Artist artist = new Artist(
-                0, // ID will be auto-generated
-                availableArtist.getName(),
-                availableArtist.getGenre(),
-                availableArtist.getImageUrl());
-
-        // Add to favorites
-        artistRepository.insert(artist);
+        // Update as favorite
+        artistRepository.updateFavoriteStatusByName(artist.getName(), true);
 
         // Show notification
         Toast.makeText(this, getString(R.string.artist_added, artist.getName()), Toast.LENGTH_SHORT).show();
