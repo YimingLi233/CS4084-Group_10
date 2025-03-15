@@ -1,6 +1,7 @@
 package com.example.group_10_melody_match.data.database.entity;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 /**
@@ -11,14 +12,17 @@ public class Artist {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
-    private String genre;
     private String imageUrl;
+    private boolean isFavorite;
+    
+    @Ignore
+    private String genre; // Temporary field for backward compatibility
 
-    public Artist(int id, String name, String genre, String imageUrl) {
+    public Artist(int id, String name, String imageUrl) {
         this.id = id;
         this.name = name;
-        this.genre = genre;
         this.imageUrl = imageUrl;
+        this.isFavorite = false;  // Default to false
     }
 
     public int getId() {
@@ -37,19 +41,28 @@ public class Artist {
         this.name = name;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+    
+    // Temporary methods for backward compatibility
+    public String getGenre() {
+        return genre;
+    }
+    
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 } 

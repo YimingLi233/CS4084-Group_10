@@ -1,6 +1,7 @@
 package com.example.group_10_melody_match.data.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -10,9 +11,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.lifecycle.LiveData;
 
 import com.example.group_10_melody_match.data.database.dao.ArtistDao;
-import com.example.group_10_melody_match.data.database.dao.AvailableArtistDao;
+import com.example.group_10_melody_match.data.database.dao.GenreDao;
+import com.example.group_10_melody_match.data.database.dao.ArtistGenreDao;
 import com.example.group_10_melody_match.data.database.entity.Artist;
-import com.example.group_10_melody_match.data.database.entity.AvailableArtist;
+import com.example.group_10_melody_match.data.database.entity.Genre;
+import com.example.group_10_melody_match.data.database.entity.ArtistGenre;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +25,7 @@ import java.util.concurrent.Executors;
 /**
  * Room Database class
  */
-@Database(entities = { Artist.class, AvailableArtist.class }, version = 1, exportSchema = false)
+@Database(entities = { Artist.class, Genre.class, ArtistGenre.class }, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     // Singleton pattern
@@ -36,8 +39,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     // Get DAOs
     public abstract ArtistDao artistDao();
-
-    public abstract AvailableArtistDao availableArtistDao();
+    public abstract GenreDao genreDao();
+    public abstract ArtistGenreDao artistGenreDao();
 
     /**
      * Get database instance (Singleton pattern)
@@ -84,15 +87,65 @@ public abstract class AppDatabase extends RoomDatabase {
      * Initialize the entire database
      */
     public static void initializeDatabase(AppDatabase db) {
-        initializeArtists(db);
-        initializeAvailableArtists(db);
-        // Add initialization methods for new entities here
+        try {
+            // Initialize genres first, as artist-genre relationships depend on genres
+            initializeGenres(db);
+            
+            // Wait a moment to ensure genres are initialized
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            
+            // Then initialize artists
+            initializeArtists(db);
+            
+            // Wait a moment to ensure artists are initialized
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            
+            // Finally initialize artist-genre relationships
+            initializeArtistGenreRelations(db);
+            
+            // Verify the initialization
+            verifyArtistGenreRelations(db);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Initialize genre data
+     */
+    public static void initializeGenres(AppDatabase db) {
+        GenreDao genreDao = db.genreDao();
+
+        // Clear existing data
+        genreDao.deleteAll();
+
+        // Create initial genre list
+        List<Genre> genres = new ArrayList<>();
+        genres.add(new Genre(0, "Pop"));
+        genres.add(new Genre(0, "Rock"));
+        genres.add(new Genre(0, "Hip-Hop"));
+        genres.add(new Genre(0, "R&B"));
+        genres.add(new Genre(0, "K-Pop"));
+        genres.add(new Genre(0, "Alternative"));
+        genres.add(new Genre(0, "Country"));
+        genres.add(new Genre(0, "Electronic"));
+
+        // Insert initial data
+        genreDao.insertAll(genres);
     }
 
     /**
      * Initialize artist data
      */
-    private static void initializeArtists(AppDatabase db) {
+    public static void initializeArtists(AppDatabase db) {
         ArtistDao artistDao = db.artistDao();
 
         // Clear existing data
@@ -100,39 +153,156 @@ public abstract class AppDatabase extends RoomDatabase {
 
         // Create initial artist list
         List<Artist> artists = new ArrayList<>();
-        artists.add(new Artist(0, "Taylor Swift", "Pop", "taylor_swift"));
-        artists.add(new Artist(0, "Ed Sheeran", "Pop", "ed_sheeran"));
-        artists.add(new Artist(0, "Billie Eilish", "Pop/Alternative", "billie_eilish"));
+        artists.add(new Artist(0, "Taylor Swift", "taylor_swift"));
+        artists.add(new Artist(0, "Ed Sheeran", "ed_sheeran"));
+        artists.add(new Artist(0, "Billie Eilish", "billie_eilish"));
+        artists.add(new Artist(0, "The Weeknd", "the_weeknd"));
+        artists.add(new Artist(0, "BTS", "bts"));
+        artists.add(new Artist(0, "Ariana Grande", "ariana_grande"));
+        artists.add(new Artist(0, "Drake", "drake"));
+        artists.add(new Artist(0, "Dua Lipa", "dua_lipa"));
+        artists.add(new Artist(0, "Justin Bieber", "justin_bieber"));
+        artists.add(new Artist(0, "Lady Gaga", "lady_gaga"));
 
         // Insert initial data
         artistDao.insertAll(artists);
+
+        // Set initial favorites
+        artistDao.updateFavoriteStatusByName("Taylor Swift", true);
+        artistDao.updateFavoriteStatusByName("Ed Sheeran", true);
+        artistDao.updateFavoriteStatusByName("Billie Eilish", true);
     }
 
     /**
-     * Initialize available artist data
+     * Initialize artist-genre relations
      */
-    private static void initializeAvailableArtists(AppDatabase db) {
-        AvailableArtistDao availableArtistDao = db.availableArtistDao();
+    public static void initializeArtistGenreRelations(AppDatabase db) {
+        try {
+            ArtistGenreDao artistGenreDao = db.artistGenreDao();
+            
+            // Clear existing relations
+            artistGenreDao.deleteAll();
+            Log.d("AppDatabase", "Cleared existing artist-genre relations");
+            
+            // Get artists by name
+            Artist taylorSwift = db.artistDao().getArtistByName("Taylor Swift");
+            Artist edSheeran = db.artistDao().getArtistByName("Ed Sheeran");
+            Artist billieEilish = db.artistDao().getArtistByName("Billie Eilish");
+            Artist theWeeknd = db.artistDao().getArtistByName("The Weeknd");
+            Artist bts = db.artistDao().getArtistByName("BTS");
+            Artist arianaGrande = db.artistDao().getArtistByName("Ariana Grande");
+            Artist drake = db.artistDao().getArtistByName("Drake");
+            Artist duaLipa = db.artistDao().getArtistByName("Dua Lipa");
+            Artist justinBieber = db.artistDao().getArtistByName("Justin Bieber");
+            Artist ladyGaga = db.artistDao().getArtistByName("Lady Gaga");
+            
+            // Get genres by name
+            Genre pop = db.genreDao().getGenreByName("Pop");
+            Genre rock = db.genreDao().getGenreByName("Rock");
+            Genre hipHop = db.genreDao().getGenreByName("Hip-Hop");
+            Genre rnb = db.genreDao().getGenreByName("R&B");
+            Genre kpop = db.genreDao().getGenreByName("K-Pop");
+            Genre alternative = db.genreDao().getGenreByName("Alternative");
+            Genre country = db.genreDao().getGenreByName("Country");
+            
+            // Create relations
+            List<ArtistGenre> relations = new ArrayList<>();
+            
+            // Check if artist and genre exist before adding relationship
+            if (taylorSwift != null && pop != null) {
+                relations.add(new ArtistGenre(taylorSwift.getId(), pop.getId()));
+            }
+            if (taylorSwift != null && country != null) {
+                relations.add(new ArtistGenre(taylorSwift.getId(), country.getId()));
+            }
+            
+            if (edSheeran != null && pop != null) {
+                relations.add(new ArtistGenre(edSheeran.getId(), pop.getId()));
+            }
+            
+            if (billieEilish != null && pop != null) {
+                relations.add(new ArtistGenre(billieEilish.getId(), pop.getId()));
+            }
+            if (billieEilish != null && alternative != null) {
+                relations.add(new ArtistGenre(billieEilish.getId(), alternative.getId()));
+            }
+            
+            if (theWeeknd != null && rnb != null) {
+                relations.add(new ArtistGenre(theWeeknd.getId(), rnb.getId()));
+            }
+            if (theWeeknd != null && pop != null) {
+                relations.add(new ArtistGenre(theWeeknd.getId(), pop.getId()));
+            }
+            
+            if (bts != null && kpop != null) {
+                relations.add(new ArtistGenre(bts.getId(), kpop.getId()));
+            }
+            
+            if (arianaGrande != null && pop != null) {
+                relations.add(new ArtistGenre(arianaGrande.getId(), pop.getId()));
+            }
+            
+            if (drake != null && hipHop != null) {
+                relations.add(new ArtistGenre(drake.getId(), hipHop.getId()));
+            }
+            
+            if (duaLipa != null && pop != null) {
+                relations.add(new ArtistGenre(duaLipa.getId(), pop.getId()));
+            }
+            
+            if (justinBieber != null && pop != null) {
+                relations.add(new ArtistGenre(justinBieber.getId(), pop.getId()));
+            }
+            
+            if (ladyGaga != null && pop != null) {
+                relations.add(new ArtistGenre(ladyGaga.getId(), pop.getId()));
+            }
+            
+            // Only insert if relations list is not empty
+            if (!relations.isEmpty()) {
+                artistGenreDao.insertAll(relations);
+                Log.d("AppDatabase", "Inserted " + relations.size() + " artist-genre relations");
+            } else {
+                Log.e("AppDatabase", "No artist-genre relations to insert!");
+            }
+        } catch (Exception e) {
+            Log.e("AppDatabase", "Error initializing artist-genre relations", e);
+            e.printStackTrace();
+        }
+    }
 
-        // Clear existing data
-        availableArtistDao.deleteAll();
-
-        // Create initial available artist list
-        List<AvailableArtist> availableArtists = new ArrayList<>();
-        availableArtists.add(new AvailableArtist(0, "Taylor Swift", "Pop", "taylor_swift"));
-        availableArtists.add(new AvailableArtist(0, "Ed Sheeran", "Pop", "ed_sheeran"));
-        availableArtists.add(new AvailableArtist(0, "Billie Eilish", "Pop/Alternative", "billie_eilish"));
-        availableArtists.add(new AvailableArtist(0, "The Weeknd", "R&B/Pop", "the_weeknd"));
-        availableArtists.add(new AvailableArtist(0, "BTS", "K-Pop", "bts"));
-        availableArtists.add(new AvailableArtist(0, "Ariana Grande", "Pop", "ariana_grande"));
-        availableArtists.add(new AvailableArtist(0, "Drake", "Hip-Hop/Rap", "drake"));
-        availableArtists.add(new AvailableArtist(0, "Dua Lipa", "Pop", "dua_lipa"));
-        availableArtists.add(new AvailableArtist(0, "Justin Bieber", "Pop", "justin_bieber"));
-        availableArtists.add(new AvailableArtist(0, "Lady Gaga", "Pop", "lady_gaga"));
-        availableArtists.add(new AvailableArtist(0, "Beyoncé", "R&B/Pop", "beyonce"));
-        availableArtists.add(new AvailableArtist(0, "Coldplay", "Alternative/Rock", "coldplay"));
-
-        // Insert initial data
-        availableArtistDao.insertAll(availableArtists);
+    /**
+     * Verify artist-genre relations after initialization
+     */
+    private static void verifyArtistGenreRelations(AppDatabase db) {
+        // This method is called from initializeDatabase which is already running in a background thread
+        // So we don't need to create another thread here
+        try {
+            // Check a few artists to make sure they have genres
+            Artist taylorSwift = db.artistDao().getArtistByName("Taylor Swift");
+            if (taylorSwift != null) {
+                int count = db.artistGenreDao().countGenresForArtist(taylorSwift.getId());
+                Log.d("AppDatabase", "Taylor Swift has " + count + " genres");
+            }
+            
+            Artist edSheeran = db.artistDao().getArtistByName("Ed Sheeran");
+            if (edSheeran != null) {
+                int count = db.artistGenreDao().countGenresForArtist(edSheeran.getId());
+                Log.d("AppDatabase", "Ed Sheeran has " + count + " genres");
+            }
+            
+            // Count total relations
+            int totalRelations = 0;
+            List<Artist> allArtists = db.artistDao().getAllArtistsSync();
+            if (allArtists != null) {
+                for (Artist artist : allArtists) {
+                    totalRelations += db.artistGenreDao().countGenresForArtist(artist.getId());
+                }
+            }
+            Log.d("AppDatabase", "Total artist-genre relations: " + totalRelations);
+            
+        } catch (Exception e) {
+            Log.e("AppDatabase", "Error verifying artist-genre relations", e);
+        }
     }
 }

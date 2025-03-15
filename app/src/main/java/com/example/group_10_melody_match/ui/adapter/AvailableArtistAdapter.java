@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.group_10_melody_match.R;
-import com.example.group_10_melody_match.data.database.entity.AvailableArtist;
+import com.example.group_10_melody_match.data.database.entity.Artist;
 
 import java.util.List;
 
@@ -21,14 +21,14 @@ import java.util.List;
  */
 public class AvailableArtistAdapter extends RecyclerView.Adapter<AvailableArtistAdapter.AvailableArtistViewHolder> {
     private Context context;
-    private List<AvailableArtist> availableArtistList;
+    private List<Artist> availableArtistList;
     private OnArtistAddListener onArtistAddListener;
 
     public interface OnArtistAddListener {
-        void onArtistAdd(AvailableArtist artist);
+        void onArtistAdd(Artist artist);
     }
 
-    public AvailableArtistAdapter(Context context, List<AvailableArtist> availableArtistList, OnArtistAddListener listener) {
+    public AvailableArtistAdapter(Context context, List<Artist> availableArtistList, OnArtistAddListener listener) {
         this.context = context;
         this.availableArtistList = availableArtistList;
         this.onArtistAddListener = listener;
@@ -43,7 +43,7 @@ public class AvailableArtistAdapter extends RecyclerView.Adapter<AvailableArtist
 
     @Override
     public void onBindViewHolder(@NonNull AvailableArtistViewHolder holder, int position) {
-        AvailableArtist artist = availableArtistList.get(position);
+        Artist artist = availableArtistList.get(position);
         
         holder.artistName.setText(artist.getName());
         holder.artistGenre.setText(artist.getGenre());
@@ -74,7 +74,7 @@ public class AvailableArtistAdapter extends RecyclerView.Adapter<AvailableArtist
     /**
      * Update data
      */
-    public void updateData(List<AvailableArtist> newList) {
+    public void updateData(List<Artist> newList) {
         this.availableArtistList = newList;
         notifyDataSetChanged();
     }
