@@ -13,15 +13,15 @@ public class Song {
     private String title;
     private String artistName;
     private String imageUrl;
+    private String resourceUrl;
 
-    public Song(int id, String title, String artistName, String imageUrl) {
+    public Song(int id, String title, String artistName, String imageUrl, String resourceUrl) {
         this.id = id;
         this.title = title;
         this.artistName = artistName;
         this.imageUrl = imageUrl;
+        this.resourceUrl = resourceUrl;
     }
-
-    // Getters and Setters
 
     public int getId() {
         return id;
@@ -53,5 +53,13 @@ public class Song {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getResourceUrl() {
+        return resourceUrl;
+    }
+
+    public void setResourceUrl(String resourceUrl) {
+        this.resourceUrl = resourceUrl;
     }
 }

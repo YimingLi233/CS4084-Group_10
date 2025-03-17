@@ -2,6 +2,7 @@ package com.example.group_10_melody_match.ui.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,30 +18,41 @@ import java.util.List;
 public class SongListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SongAdapter songAdapter;
-    private String artistName; // ✅ 改成类的成员变量
+    private String artistName;
+
+    private TextView titleTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_list);
 
+        // Initialize song list textview
+        titleTextView = findViewById(R.id.song_list_title);
+
+        // Get artist name from intent
+        artistName = getIntent().getStringExtra("artist_name");
+        if (artistName == null || artistName.isEmpty()) {
+            Log.e("SongListActivity", "Error: No valid artist name received!");
+            finish();
+            return;
+        }
+
+        Log.d("SongListActivity", "Received artist name: " + artistName);
+
+        // Set title as artist's name
+        titleTextView.setText(artistName + "'s Songs");
+
+        // Set up RecyclerView
         recyclerView = findViewById(R.id.recycler_view_songs);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         songAdapter = new SongAdapter();
         recyclerView.setAdapter(songAdapter);
 
-        // ✅ 现在 artistName 是类的成员变量
-        artistName = getIntent().getStringExtra("artist_name");
-        Log.d("SongListActivity", "Received artist name: " + artistName);
-
-        if (artistName == null || artistName.isEmpty()) {
-            Log.e("SongListActivity", "Error: No valid artist name received!");
-            finish();
-        }
-
-        // ✅ 现在 loadSongs() 可以访问 artistName
+        // Load songs for the artist
         loadSongs();
     }
+
 
     private void loadSongs() {
         AppDatabase.getDatabase(this).songDao().getSongsByArtistName(artistName)

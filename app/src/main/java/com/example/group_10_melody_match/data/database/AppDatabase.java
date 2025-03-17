@@ -8,8 +8,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.lifecycle.LiveData;
 
+import com.example.group_10_melody_match.R;
 import com.example.group_10_melody_match.data.database.dao.ArtistDao;
 import com.example.group_10_melody_match.data.database.dao.GenreDao;
 import com.example.group_10_melody_match.data.database.dao.ArtistGenreDao;
@@ -27,7 +27,7 @@ import java.util.concurrent.Executors;
 /**
  * Room Database class
  */
-@Database(entities = { Artist.class, Genre.class, ArtistGenre.class, Song.class }, version = 5, exportSchema = false)
+@Database(entities = { Artist.class, Genre.class, ArtistGenre.class, Song.class }, version = 6, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     // Singleton pattern
@@ -300,12 +300,11 @@ public abstract class AppDatabase extends RoomDatabase {
         songDao.deleteAll();
 
         List<Song> songs = new ArrayList<>();
-        songs.add(new Song(0, "Love Story", "Taylor Swift", "love_story_image"));
-        songs.add(new Song(0, "You Belong With Me", "Taylor Swift", "you_belong_with_me_image"));
+        songs.add(new Song(0, "Call it what you want", "Taylor Swift", "ciwyw_image",  "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+        songs.add(new Song(0, "Champagne problem", "Taylor Swift", "cp_image",  "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
 
         songDao.insertAll(songs);
 
-        Log.d("DatabaseInit", "Inserted Songs: " + songs.size() + " songs into database");
     }
 
 

@@ -35,6 +35,9 @@
         <activity android:name=".ui.activity.SongListActivity" />
 
 
+        <activity android:name=".ui.activity.SongPlayActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
 
     </application>
 

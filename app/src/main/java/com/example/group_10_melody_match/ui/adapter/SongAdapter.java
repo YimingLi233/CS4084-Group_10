@@ -1,5 +1,6 @@
 package com.example.group_10_melody_match.ui.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.group_10_melody_match.R;
 import com.example.group_10_melody_match.data.database.entity.Song;
+import com.example.group_10_melody_match.ui.activity.SongPlayActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,15 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         Song song = songs.get(position);
         holder.songTitle.setText(song.getTitle());
         holder.songArtist.setText("Artist ID: " + song.getArtistName());
+
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), SongPlayActivity.class);
+            intent.putExtra("song_title", song.getTitle());
+            intent.putExtra("song_artist", song.getArtistName());
+            intent.putExtra("song_image", song.getImageUrl());
+            intent.putExtra("song_url", song.getResourceUrl());
+            view.getContext().startActivity(intent);
+        });
     }
 
     @Override
@@ -49,5 +61,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             songArtist = itemView.findViewById(R.id.song_artist);
             songImage = itemView.findViewById(R.id.song_image);
         }
+
+
     }
 }

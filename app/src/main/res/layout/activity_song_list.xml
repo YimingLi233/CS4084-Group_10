@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.SongListActivity">
 
-    <!-- ✅ 标题 -->
     <TextView
         android:id="@+id/song_list_title"
         android:layout_width="wrap_content"
@@ -20,7 +19,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
 
-    <!-- ✅ RecyclerView 用于显示歌曲列表 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_songs"
         android:layout_width="0dp"
