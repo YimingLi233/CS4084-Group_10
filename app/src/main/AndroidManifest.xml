@@ -31,6 +31,11 @@
             android:name=".ui.activity.AddArtistActivity"
             android:exported="false"
             android:label="@string/add_artist" />
+
+        <activity android:name=".ui.activity.SongListActivity" />
+
+
+
     </application>
 
 </manifest>

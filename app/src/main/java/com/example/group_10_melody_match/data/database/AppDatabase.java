@@ -13,9 +13,11 @@ import androidx.lifecycle.LiveData;
 import com.example.group_10_melody_match.data.database.dao.ArtistDao;
 import com.example.group_10_melody_match.data.database.dao.GenreDao;
 import com.example.group_10_melody_match.data.database.dao.ArtistGenreDao;
+import com.example.group_10_melody_match.data.database.dao.SongDao;
 import com.example.group_10_melody_match.data.database.entity.Artist;
 import com.example.group_10_melody_match.data.database.entity.Genre;
 import com.example.group_10_melody_match.data.database.entity.ArtistGenre;
+import com.example.group_10_melody_match.data.database.entity.Song;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,7 @@ import java.util.concurrent.Executors;
 /**
  * Room Database class
  */
-@Database(entities = { Artist.class, Genre.class, ArtistGenre.class }, version = 3, exportSchema = false)
+@Database(entities = { Artist.class, Genre.class, ArtistGenre.class, Song.class }, version = 5, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     // Singleton pattern
@@ -41,6 +43,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ArtistDao artistDao();
     public abstract GenreDao genreDao();
     public abstract ArtistGenreDao artistGenreDao();
+    public abstract SongDao songDao();
 
     /**
      * Get database instance (Singleton pattern)
@@ -74,6 +77,8 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
+            Log.d("Database", "✅ Room database created!");
+
 
             // Add initial data in a new thread
             databaseWriteExecutor.execute(() -> {
@@ -88,6 +93,9 @@ public abstract class AppDatabase extends RoomDatabase {
      */
     public static void initializeDatabase(AppDatabase db) {
         try {
+
+            Log.d("DatabaseInit", "✅ Initializing Database...");
+
             // Initialize genres first, as artist-genre relationships depend on genres
             initializeGenres(db);
             
@@ -107,14 +115,28 @@ public abstract class AppDatabase extends RoomDatabase {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            // Then initialize songs
+            initializeSongs(db);
+
+            // Wait a moment to ensure songs are initialized
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             
             // Finally initialize artist-genre relationships
             initializeArtistGenreRelations(db);
             
             // Verify the initialization
             verifyArtistGenreRelations(db);
+
+            Log.d("DatabaseInit", "✅ Database Initialized Successfully!");
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("DatabaseInit", "❌ Database Initialization Failed", e);
+
         }
     }
 
@@ -270,6 +292,23 @@ public abstract class AppDatabase extends RoomDatabase {
             e.printStackTrace();
         }
     }
+
+    public static void initializeSongs(AppDatabase db) {
+        Log.d("DatabaseInit", "Initializing Songs Table...");
+
+        SongDao songDao = db.songDao();
+        songDao.deleteAll();
+
+        List<Song> songs = new ArrayList<>();
+        songs.add(new Song(0, "Love Story", "Taylor Swift", "love_story_image"));
+        songs.add(new Song(0, "You Belong With Me", "Taylor Swift", "you_belong_with_me_image"));
+
+        songDao.insertAll(songs);
+
+        Log.d("DatabaseInit", "Inserted Songs: " + songs.size() + " songs into database");
+    }
+
+
 
     /**
      * Verify artist-genre relations after initialization
