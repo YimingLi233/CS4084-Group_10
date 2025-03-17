@@ -7,7 +7,6 @@
     android:gravity="center"
     android:background="@android:color/white">
 
-    <!-- 专辑封面 -->
     <ImageView
         android:id="@+id/album_cover"
         android:layout_width="200dp"
@@ -16,7 +15,6 @@
         android:src="@drawable/ic_launcher_foreground"
         android:layout_marginBottom="20dp"/>
 
-    <!-- 歌曲标题 -->
     <TextView
         android:id="@+id/song_title"
         android:layout_width="wrap_content"
@@ -27,7 +25,6 @@
         android:gravity="center"
         android:layout_marginBottom="5dp"/>
 
-    <!-- 歌手名称 -->
     <TextView
         android:id="@+id/song_artist"
         android:layout_width="wrap_content"
@@ -37,7 +34,6 @@
         android:gravity="center"
         android:layout_marginBottom="20dp"/>
 
-    <!-- 播放控制按钮 -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

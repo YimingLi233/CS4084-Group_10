@@ -36,7 +36,7 @@ public class SongPlayActivity extends AppCompatActivity {
         // 设置 UI 数据
         titleTextView.setText(songTitle);
         artistTextView.setText(songArtist);
-        albumCover.setImageResource(R.drawable.ic_launcher_foreground);  // 🔥 这里可以改为实际图片加载逻辑
+        albumCover.setImageResource(R.drawable.ic_launcher_foreground);
 
         // 初始化 MediaPlayer
         mediaPlayer = new MediaPlayer();
