@@ -55,18 +55,41 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
         
         holder.artistName.setText(artist.getName());
         holder.artistGenre.setText(artist.getGenre());
-        
-        // Set artist image
-        int resourceId = context.getResources().getIdentifier(
-                artist.getImageUrl(), "drawable", context.getPackageName());
-        if (resourceId != 0) {
-            holder.artistImage.setImageResource(resourceId);
-        } else {
-            // If image not found, use default image
-            holder.artistImage.setImageResource(R.drawable.default_artist);
-        }
-        
-        // Set remove button click event
+
+// Load artist image (temporary static assignment for Taylor Swift)
+        holder.artistImage.setImageResource(R.drawable.taylor_swift);
+
+// Click event to SongListActivity
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, SongListActivity.class);
+            intent.putExtra("artist_id", artist.getId());
+            intent.putExtra("artist_name", artist.getName());
+            context.startActivity(intent);
+            Log.d("ArtistAdapter", "Artist: " + artist.getName());
+        });
+
+// --- Keeping their commented version below for reference ---
+
+//        // 点击跳转，并获取数据库中的歌曲
+//        holder.itemView.setOnClickListener(v -> {
+//            new Thread(() -> {
+//                AppDatabase db = AppDatabase.getDatabase(context);
+//                SongDao songDao = db.songDao();
+//                List<Song> songs = songDao.getAllSongs();
+//                List<Song> artistSongs = new ArrayList<>();
+//                for (Song song : songs) {
+//                    if (song.getSongArtist().equals(artist.getName())) {
+//                        artistSongs.add(song);
+//                    }
+//                }
+//                Intent intent = new Intent(context, SongPlayActivity.class);
+//                intent.putExtra("artist_name", artist.getName());
+//                intent.putExtra("artist_genre", artist.getGenre());
+//                intent.putParcelableArrayListExtra("songs", new ArrayList<>(artistSongs));
+//                context.startActivity(intent);
+//            }).start();
+//        });
+
         if (holder.btnRemove != null) {
             holder.btnRemove.setOnClickListener(v -> {
                 if (onArtistRemoveListener != null) {
