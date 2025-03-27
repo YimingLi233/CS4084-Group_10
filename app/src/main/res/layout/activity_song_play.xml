@@ -1,69 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp"
-    android:gravity="center"
-    android:background="@android:color/white">
-
-    <ImageView
-        android:id="@+id/album_cover"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_foreground"
-        android:layout_marginBottom="20dp"/>
+    android:background="#F5F0FF">
 
     <TextView
-        android:id="@+id/song_title"
+        android:id="@+id/heading_now_playing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Unchained Melody"
-        android:textSize="22sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Now Playing"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
         android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="5dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/song_artist"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/album_card"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Demi Moore"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/heading_now_playing">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/album_cover"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_foreground" 
+                android:contentDescription="Album Artwork"/>
+
+            <TextView
+                android:id="@+id/song_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Unchained Melody"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/song_artist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Artist Name"
+                android:textAlignment="center"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/controls_container"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="32dp"
         android:gravity="center"
-        android:layout_marginTop="20dp">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/album_card">
 
-        <ImageButton
-            android:id="@+id/btn_prev"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@android:drawable/ic_media_previous"
-            android:background="?attr/selectableItemBackground"/>
-
-        <ImageButton
-            android:id="@+id/btn_play_pause"
+        <androidx.cardview.widget.CardView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@android:drawable/ic_media_play"
-            android:background="?attr/selectableItemBackground"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"/>
+            android:layout_margin="8dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#6750A4">
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/btn_next"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:src="@android:drawable/ic_media_next"-->
-<!--            android:background="?attr/selectableItemBackground"/>-->
+            <ImageButton
+                android:id="@+id/btn_prev"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="Previous Song"
+                android:src="@android:drawable/ic_media_previous"
+                android:tint="@android:color/white" />
+        </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="35dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#6750A4">
+
+            <ImageButton
+                android:id="@+id/btn_play_pause"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="Play/Pause"
+                android:src="@android:drawable/ic_media_play"
+                android:tint="@android:color/white" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#6750A4">
+
+            <ImageButton
+                android:id="@+id/btn_next"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="Next Song"
+                android:src="@android:drawable/ic_media_next"
+                android:tint="@android:color/white" />
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

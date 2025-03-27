@@ -3,11 +3,13 @@ package com.example.group_10_melody_match.ui.activity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.group_10_melody_match.R;
 import com.example.group_10_melody_match.data.database.entity.Song;
@@ -20,7 +22,8 @@ import java.util.List;
  * 
  * Features:
  * - Play/pause functionality
- * - Previous song navigation (newly added)
+ * - Previous song navigation
+ * - Next song navigation
  * - Handles song playback with MediaPlayer
  */
 public class SongPlayActivity extends AppCompatActivity {
@@ -29,6 +32,7 @@ public class SongPlayActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private ImageButton playPauseButton;
     private ImageButton prevButton;
+    private ImageButton nextButton;
     private String songUrl;
     private boolean isPlaying = false;
 
@@ -47,11 +51,34 @@ public class SongPlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_play);
 
+        // Set up back navigation safely
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
+
         // Get intent data
         String songTitle = getIntent().getStringExtra("song_title");
         String songArtist = getIntent().getStringExtra("song_artist");
         String songImage = getIntent().getStringExtra("song_image");
         songUrl = getIntent().getStringExtra("song_url");
+
+        // Validate essential data
+        if (songUrl == null || songUrl.isEmpty()) {
+            Log.e(TAG, "No valid song URL provided");
+            Toast.makeText(this, "Unable to play song - missing data", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // Set action bar title safely
+        if (actionBar != null) {
+            actionBar.setTitle("Now Playing");
+            if (songTitle != null) {
+                actionBar.setSubtitle(songTitle);
+            }
+        }
 
         // Retrieve position data for navigation between songs
         // Default to 0 if not provided (first song in list)
@@ -71,32 +98,56 @@ public class SongPlayActivity extends AppCompatActivity {
         albumCover = findViewById(R.id.album_cover);
         playPauseButton = findViewById(R.id.btn_play_pause);
         prevButton = findViewById(R.id.btn_prev);
+        nextButton = findViewById(R.id.btn_next);
 
         // Set UI data
-        titleTextView.setText(songTitle);
-        artistTextView.setText(songArtist);
+        if (songTitle != null) {
+            titleTextView.setText(songTitle);
+        }
+        if (songArtist != null) {
+            artistTextView.setText(songArtist);
+        }
         albumCover.setImageResource(R.drawable.ic_launcher_foreground);
 
         // Initialize MediaPlayer
         initializeMediaPlayer();
 
         // Play/Pause button logic
-        playPauseButton.setOnClickListener(view -> {
-            if (isPlaying) {
-                mediaPlayer.pause();
-                playPauseButton.setImageResource(android.R.drawable.ic_media_play);
-            } else {
-                mediaPlayer.start();
-                playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
-            }
-            isPlaying = !isPlaying;
-        });
+        if (playPauseButton != null) {
+            playPauseButton.setOnClickListener(view -> {
+                if (isPlaying) {
+                    mediaPlayer.pause();
+                    playPauseButton.setImageResource(android.R.drawable.ic_media_play);
+                } else {
+                    mediaPlayer.start();
+                    playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+                }
+                isPlaying = !isPlaying;
+            });
+        }
 
         // Previous button logic
-        // This handler enables users to navigate to previous songs in the playlist
-        prevButton.setOnClickListener(view -> {
-            playPreviousSong();
-        });
+        if (prevButton != null) {
+            prevButton.setOnClickListener(view -> {
+                playPreviousSong();
+            });
+        }
+
+        // Next button logic
+        if (nextButton != null) {
+            nextButton.setOnClickListener(view -> {
+                playNextSong();
+            });
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // Close this activity and return to previous
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -117,25 +168,17 @@ public class SongPlayActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e(TAG, "Error initializing media player", e);
             Toast.makeText(this, "Error playing song", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e(TAG, "Unexpected error initializing media player", e);
+            Toast.makeText(this, "Unable to play this song", Toast.LENGTH_SHORT).show();
         }
     }
 
     /**
      * Plays the previous song in the song list if available
-     * 
-     * Implementation details:
-     * 1. Checks if a previous song exists in the list
-     * 2. Updates position counter and retrieves previous song
-     * 3. Updates UI with new song information
-     * 4. Resets media player with new song URL
-     * 5. Maintains the current play/pause state during transition
-     * 
-     * This approach provides a seamless transition between songs while
-     * preserving the user's chosen playback state
      */
     private void playPreviousSong() {
         // Check if there's a previous song
-        // Boundary check to avoid IndexOutOfBoundsException
         if (songList.isEmpty() || currentPosition <= 0) {
             Toast.makeText(this, "No previous song available", Toast.LENGTH_SHORT).show();
             return;
@@ -144,43 +187,118 @@ public class SongPlayActivity extends AppCompatActivity {
         // Go to previous song by decrementing position
         currentPosition--;
 
-        // Update the current song reference
-        Song previousSong = songList.get(currentPosition);
+        try {
+            // Update the current song reference
+            Song previousSong = songList.get(currentPosition);
 
-        // Update UI with new song details
-        titleTextView.setText(previousSong.getTitle());
-        artistTextView.setText(previousSong.getArtistName());
+            // Update UI with new song details
+            titleTextView.setText(previousSong.getTitle());
+            artistTextView.setText(previousSong.getArtistName());
 
-        // Reset media player for the new song
-        if (mediaPlayer != null) {
-            // Remember if we were playing to maintain state during transition
-            boolean wasPlaying = isPlaying;
-            mediaPlayer.release();
-
-            // Set new song
-            mediaPlayer = new MediaPlayer();
-            try {
-                // Update song URL and prepare new media player
-                songUrl = previousSong.getResourceUrl();
-                mediaPlayer.setDataSource(this, android.net.Uri.parse(songUrl));
-                mediaPlayer.prepare();
-
-                // Restore previous playback state
-                if (wasPlaying) {
-                    // Continue playing if song was playing before
-                    mediaPlayer.start();
-                    playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
-                    isPlaying = true;
-                } else {
-                    // Maintain paused state if song was paused before
-                    playPauseButton.setImageResource(android.R.drawable.ic_media_play);
-                    isPlaying = false;
-                }
-            } catch (IOException e) {
-                // Handle errors gracefully with both logs and user feedback
-                Log.e(TAG, "Error playing previous song", e);
-                Toast.makeText(this, "Error playing previous song", Toast.LENGTH_SHORT).show();
+            // Update action bar subtitle safely
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setSubtitle(previousSong.getTitle());
             }
+
+            // Reset media player for the new song
+            if (mediaPlayer != null) {
+                // Remember if we were playing to maintain state during transition
+                boolean wasPlaying = isPlaying;
+                mediaPlayer.release();
+
+                // Set new song
+                mediaPlayer = new MediaPlayer();
+                try {
+                    // Update song URL and prepare new media player
+                    songUrl = previousSong.getResourceUrl();
+                    mediaPlayer.setDataSource(this, android.net.Uri.parse(songUrl));
+                    mediaPlayer.prepare();
+
+                    // Restore previous playback state
+                    if (wasPlaying) {
+                        // Continue playing if song was playing before
+                        mediaPlayer.start();
+                        playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+                        isPlaying = true;
+                    } else {
+                        // Maintain paused state if song was paused before
+                        playPauseButton.setImageResource(android.R.drawable.ic_media_play);
+                        isPlaying = false;
+                    }
+                } catch (IOException e) {
+                    // Handle errors gracefully with both logs and user feedback
+                    Log.e(TAG, "Error playing previous song", e);
+                    Toast.makeText(this, "Error playing previous song", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error in playPreviousSong()", e);
+            Toast.makeText(this, "Error navigating to previous song", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Plays the next song in the song list if available
+     */
+    private void playNextSong() {
+        // Check if there's a next song
+        if (songList.isEmpty() || currentPosition >= songList.size() - 1) {
+            Toast.makeText(this, "No next song available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Go to next song by incrementing position
+        currentPosition++;
+
+        try {
+            // Update the current song reference
+            Song nextSong = songList.get(currentPosition);
+
+            // Update UI with new song details
+            titleTextView.setText(nextSong.getTitle());
+            artistTextView.setText(nextSong.getArtistName());
+
+            // Update action bar subtitle safely
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setSubtitle(nextSong.getTitle());
+            }
+
+            // Reset media player for the new song
+            if (mediaPlayer != null) {
+                // Remember if we were playing to maintain state during transition
+                boolean wasPlaying = isPlaying;
+                mediaPlayer.release();
+
+                // Set new song
+                mediaPlayer = new MediaPlayer();
+                try {
+                    // Update song URL and prepare new media player
+                    songUrl = nextSong.getResourceUrl();
+                    mediaPlayer.setDataSource(this, android.net.Uri.parse(songUrl));
+                    mediaPlayer.prepare();
+
+                    // Restore previous playback state
+                    if (wasPlaying) {
+                        // Continue playing if song was playing before
+                        mediaPlayer.start();
+                        playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+                        isPlaying = true;
+                    } else {
+                        // Maintain paused state if song was paused before
+                        playPauseButton.setImageResource(android.R.drawable.ic_media_play);
+                        isPlaying = false;
+                    }
+                } catch (IOException e) {
+                    // Handle errors gracefully with both logs and user feedback
+                    Log.e(TAG, "Error playing next song", e);
+                    Toast.makeText(this, "Error playing next song", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error in playNextSong()", e);
+            Toast.makeText(this, "Error navigating to next song", Toast.LENGTH_SHORT).show();
         }
     }
 

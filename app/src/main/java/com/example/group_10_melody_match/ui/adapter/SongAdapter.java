@@ -2,11 +2,14 @@ package com.example.group_10_melody_match.ui.adapter;
 
 import android.content.Intent;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.group_10_melody_match.R;
@@ -25,10 +28,11 @@ import java.util.List;
  * - Using Parcelable to efficiently transfer data between activities
  */
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
+    private static final String TAG = "SongAdapter";
     private List<Song> songs = new ArrayList<>();
 
     public void setSongs(List<Song> songs) {
-        this.songs = songs;
+        this.songs = songs != null ? songs : new ArrayList<>();
         notifyDataSetChanged();
     }
 
@@ -41,30 +45,73 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull SongViewHolder holder, int position) {
-        Song song = songs.get(position);
-        holder.songTitle.setText(song.getTitle());
-        holder.songArtist.setText("Artist ID: " + song.getArtistName());
+        try {
+            Song song = songs.get(position);
 
-        holder.itemView.setOnClickListener(view -> {
+            // Set text safely
+            holder.songTitle.setText(song.getTitle() != null ? song.getTitle() : "Unknown Title");
+            holder.songArtist.setText(song.getArtistName() != null ? song.getArtistName() : "Unknown Artist");
+
+            // Set a default or generated image for the song
+            holder.songImage.setImageResource(R.drawable.ic_launcher_foreground);
+
+            // Set click listener for the whole item to play the song
+            holder.itemView.setOnClickListener(view -> {
+                playSong(view, song, position);
+            });
+
+            // Set click listener for the play button
+            if (holder.btnPlaySong != null) {
+                holder.btnPlaySong.setOnClickListener(view -> {
+                    playSong(view, song, position);
+                });
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error binding song at position " + position, e);
+        }
+    }
+
+    /**
+     * Start the song play activity with the selected song
+     * 
+     * @param view     The view that was clicked
+     * @param song     The song to play
+     * @param position The position of the song in the list
+     */
+    private void playSong(View view, Song song, int position) {
+        try {
             Intent intent = new Intent(view.getContext(), SongPlayActivity.class);
 
+            // Validate song details before passing
+            String title = song.getTitle() != null ? song.getTitle() : "Unknown Title";
+            String artist = song.getArtistName() != null ? song.getArtistName() : "Unknown Artist";
+            String imageUrl = song.getImageUrl() != null ? song.getImageUrl() : "";
+            String resourceUrl = song.getResourceUrl();
+
+            // Check if song has a valid resource URL
+            if (resourceUrl == null || resourceUrl.isEmpty()) {
+                Toast.makeText(view.getContext(), "Song cannot be played - missing audio file", Toast.LENGTH_SHORT)
+                        .show();
+                return;
+            }
+
             // Add basic song information
-            intent.putExtra("song_title", song.getTitle());
-            intent.putExtra("song_artist", song.getArtistName());
-            intent.putExtra("song_image", song.getImageUrl());
-            intent.putExtra("song_url", song.getResourceUrl());
+            intent.putExtra("song_title", title);
+            intent.putExtra("song_artist", artist);
+            intent.putExtra("song_image", imageUrl);
+            intent.putExtra("song_url", resourceUrl);
 
             // The current position is crucial for navigation functionality
-            // It lets SongPlayActivity know which song in the list is currently playing
             intent.putExtra("current_position", position);
 
             // Pass the entire song list to enable previous/next functionality
-            // This allows SongPlayActivity to navigate between songs without
-            // returning to the song list activity
             intent.putParcelableArrayListExtra("all_songs", new ArrayList<>(songs));
 
             view.getContext().startActivity(intent);
-        });
+        } catch (Exception e) {
+            Log.e(TAG, "Error playing song", e);
+            Toast.makeText(view.getContext(), "Error playing song", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -75,12 +122,14 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     static class SongViewHolder extends RecyclerView.ViewHolder {
         TextView songTitle, songArtist;
         ImageView songImage;
+        ImageButton btnPlaySong;
 
         SongViewHolder(View itemView) {
             super(itemView);
             songTitle = itemView.findViewById(R.id.song_title);
             songArtist = itemView.findViewById(R.id.song_artist);
             songImage = itemView.findViewById(R.id.song_image);
+            btnPlaySong = itemView.findViewById(R.id.btn_play_song);
         }
     }
 }
