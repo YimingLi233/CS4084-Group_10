@@ -1,13 +1,25 @@
 package com.example.group_10_melody_match.data.database.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 /**
  * Represents a song in the database
+ * 
+ * This class implements Parcelable to enable:
+ * 1. Passing lists of Song objects between activities using Intent
+ * 2. Supporting song navigation features (previous/next song)
+ * 3. Maintaining song context when switching between songs
+ * 
+ * Parcelable is preferred over Serializable for Android because:
+ * - It's significantly faster (up to 10x)
+ * - It generates less garbage collection overhead
+ * - It's specifically designed for Android's IPC mechanisms
  */
 @Entity(tableName = "songs")
-public class Song {
+public class Song implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String title;
@@ -22,6 +34,38 @@ public class Song {
         this.imageUrl = imageUrl;
         this.resourceUrl = resourceUrl;
     }
+
+    /**
+     * Constructor for recreating object from a Parcel
+     * 
+     * Called by the Parcelable.Creator to recreate the object
+     * Order of reading must match order of writing in writeToParcel
+     */
+    protected Song(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        artistName = in.readString();
+        imageUrl = in.readString();
+        resourceUrl = in.readString();
+    }
+
+    /**
+     * Creator object that creates instances of Song from a Parcel
+     * 
+     * This is required for Parcelable implementation and used by Android's
+     * framework when unparceling Song objects from an Intent
+     */
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -61,5 +105,28 @@ public class Song {
 
     public void setResourceUrl(String resourceUrl) {
         this.resourceUrl = resourceUrl;
+    }
+
+    /**
+     * Special flags for Parcelable, generally 0 unless file descriptors are used
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /**
+     * Write object fields to the Parcel
+     * 
+     * This method serializes the Song object for transport between activities
+     * Order of writing must match order of reading in the constructor
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(artistName);
+        dest.writeString(imageUrl);
+        dest.writeString(resourceUrl);
     }
 }

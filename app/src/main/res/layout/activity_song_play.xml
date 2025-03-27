@@ -41,12 +41,12 @@
         android:gravity="center"
         android:layout_marginTop="20dp">
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/btn_prev"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:src="@android:drawable/ic_media_previous"-->
-<!--            android:background="?attr/selectableItemBackground"/>-->
+        <ImageButton
+            android:id="@+id/btn_prev"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@android:drawable/ic_media_previous"
+            android:background="?attr/selectableItemBackground"/>
 
         <ImageButton
             android:id="@+id/btn_play_pause"
