@@ -56,39 +56,17 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
         holder.artistName.setText(artist.getName());
         holder.artistGenre.setText(artist.getGenre());
 
-// Load artist image (temporary static assignment for Taylor Swift)
-        holder.artistImage.setImageResource(R.drawable.taylor_swift);
+        // Set artist image
+        int resourceId = context.getResources().getIdentifier(
+                artist.getImageUrl(), "drawable", context.getPackageName());
+        if (resourceId != 0) {
+            holder.artistImage.setImageResource(resourceId);
+        } else {
+            // If image not found, use default image
+            holder.artistImage.setImageResource(R.drawable.default_artist);
+        }
 
-// Click event to SongListActivity
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, SongListActivity.class);
-            intent.putExtra("artist_id", artist.getId());
-            intent.putExtra("artist_name", artist.getName());
-            context.startActivity(intent);
-            Log.d("ArtistAdapter", "Artist: " + artist.getName());
-        });
-
-// --- Keeping their commented version below for reference ---
-
-//        // 点击跳转，并获取数据库中的歌曲
-//        holder.itemView.setOnClickListener(v -> {
-//            new Thread(() -> {
-//                AppDatabase db = AppDatabase.getDatabase(context);
-//                SongDao songDao = db.songDao();
-//                List<Song> songs = songDao.getAllSongs();
-//                List<Song> artistSongs = new ArrayList<>();
-//                for (Song song : songs) {
-//                    if (song.getSongArtist().equals(artist.getName())) {
-//                        artistSongs.add(song);
-//                    }
-//                }
-//                Intent intent = new Intent(context, SongPlayActivity.class);
-//                intent.putExtra("artist_name", artist.getName());
-//                intent.putExtra("artist_genre", artist.getGenre());
-//                intent.putParcelableArrayListExtra("songs", new ArrayList<>(artistSongs));
-//                context.startActivity(intent);
-//            }).start();
-//        });
+        // Set remove button click event
 
         if (holder.btnRemove != null) {
             holder.btnRemove.setOnClickListener(v -> {
@@ -104,7 +82,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
 
             if (artist.getName() == null || artist.getName().isEmpty()) {
                 Log.e("ArtistAdapter", "Error: artist name is NULL or EMPTY");
-                return; // 避免崩溃
+                return;
             }
             Intent intent = new Intent(view.getContext(), SongListActivity.class);
             intent.putExtra("artist_name", artist.getName());  // pass name

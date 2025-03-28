@@ -1,6 +1,7 @@
 package com.example.group_10_melody_match.ui.activity;
 
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -61,7 +62,7 @@ public class SongPlayActivity extends AppCompatActivity {
         // Get intent data
         String songTitle = getIntent().getStringExtra("song_title");
         String songArtist = getIntent().getStringExtra("song_artist");
-        String songImage = getIntent().getStringExtra("song_image");
+        String songImage = getIntent().getStringExtra("song_cover");
         songUrl = getIntent().getStringExtra("song_url");
 
         // Validate essential data
@@ -95,7 +96,7 @@ public class SongPlayActivity extends AppCompatActivity {
         // Initialize UI components
         titleTextView = findViewById(R.id.song_title);
         artistTextView = findViewById(R.id.song_artist);
-        albumCover = findViewById(R.id.album_cover);
+        albumCover = findViewById(R.id.song_cover);
         playPauseButton = findViewById(R.id.btn_play_pause);
         prevButton = findViewById(R.id.btn_prev);
         nextButton = findViewById(R.id.btn_next);
@@ -107,7 +108,36 @@ public class SongPlayActivity extends AppCompatActivity {
         if (songArtist != null) {
             artistTextView.setText(songArtist);
         }
-        albumCover.setImageResource(R.drawable.ic_launcher_foreground);
+
+
+
+        if (songImage != null && !songImage.isEmpty()) {
+
+            Log.d(TAG, "songImage: " + songImage);  // Log songImage
+
+            String imageName = songImage.replace("android.resource://com.example.group_10_melody_match/", "");
+            Log.d(TAG, "imageName extracted: " + imageName);  // Log imageName
+
+            // Get the resource ID of the image
+            int imageResId = getResources().getIdentifier(imageName, "drawable", getPackageName());
+            Log.d(TAG, "imageResId: " + imageResId);  // Log imageResId
+
+
+
+            if (imageResId != 0) {
+                albumCover.setImageResource(imageResId);
+            } else {
+                albumCover.setImageResource(R.drawable.ic_launcher_foreground);
+                Log.d(TAG, "Image not found, using default image.");
+
+            }
+        } else {
+            albumCover.setImageResource(R.drawable.ic_launcher_foreground);
+            Log.d(TAG, "songImage is null or empty, using default image.");
+
+        }
+
+
 
         // Initialize MediaPlayer
         initializeMediaPlayer();

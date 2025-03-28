@@ -52,8 +52,15 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             holder.songTitle.setText(song.getTitle() != null ? song.getTitle() : "Unknown Title");
             holder.songArtist.setText(song.getArtistName() != null ? song.getArtistName() : "Unknown Artist");
 
-            // Set a default or generated image for the song
-            holder.songImage.setImageResource(R.drawable.ic_launcher_foreground);
+            // Set the song cover image using the imageUrl
+            if (song.getImageUrl() != null && !song.getImageUrl().isEmpty()) {
+                // Extract the image name from the full URL (excluding android.resource://...)
+                String imageName = song.getImageUrl().replace("android.resource://com.example.group_10_melody_match/", "");
+                int imageResId = holder.itemView.getContext().getResources().getIdentifier(imageName, "drawable", holder.itemView.getContext().getPackageName());
+                holder.songImage.setImageResource(imageResId != 0 ? imageResId : R.drawable.ic_launcher_foreground); // Default image if not found
+            } else {
+                holder.songImage.setImageResource(R.drawable.ic_launcher_foreground); // Default image if no URL
+            }
 
             // Set click listener for the whole item to play the song
             holder.itemView.setOnClickListener(view -> {
@@ -70,6 +77,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             Log.e(TAG, "Error binding song at position " + position, e);
         }
     }
+
 
     /**
      * Start the song play activity with the selected song
@@ -98,7 +106,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             // Add basic song information
             intent.putExtra("song_title", title);
             intent.putExtra("song_artist", artist);
-            intent.putExtra("song_image", imageUrl);
+            intent.putExtra("song_cover", imageUrl);
             intent.putExtra("song_url", resourceUrl);
 
             // The current position is crucial for navigation functionality
@@ -128,7 +136,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             super(itemView);
             songTitle = itemView.findViewById(R.id.song_title);
             songArtist = itemView.findViewById(R.id.song_artist);
-            songImage = itemView.findViewById(R.id.song_image);
+            songImage = itemView.findViewById(R.id.song_cover);
             btnPlaySong = itemView.findViewById(R.id.btn_play_song);
         }
     }

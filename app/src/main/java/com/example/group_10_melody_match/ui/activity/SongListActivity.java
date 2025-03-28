@@ -114,7 +114,7 @@ public class SongListActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SongPlayActivity.class);
         intent.putExtra("song_title", randomSong.getTitle());
         intent.putExtra("song_artist", randomSong.getArtistName());
-        intent.putExtra("song_image", randomSong.getImageUrl());
+        intent.putExtra("song_cover", randomSong.getImageUrl());
         intent.putExtra("song_url", randomSong.getResourceUrl());
         intent.putExtra("current_position", randomPosition);
 

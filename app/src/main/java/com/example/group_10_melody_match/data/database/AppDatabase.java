@@ -27,7 +27,7 @@ import java.util.concurrent.Executors;
 /**
  * Room Database class
  */
-@Database(entities = { Artist.class, Genre.class, ArtistGenre.class, Song.class }, version = 7, exportSchema = false)
+@Database(entities = { Artist.class, Genre.class, ArtistGenre.class, Song.class }, version = 8, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     // Singleton pattern
@@ -304,11 +304,11 @@ public abstract class AppDatabase extends RoomDatabase {
         List<Song> songs = new ArrayList<>();
 
         // Taylor Swift songs (keep existing)
-        songs.add(new Song(0, "Call it what you want", "Taylor Swift", "ciwyw_image",
+        songs.add(new Song(0, "Call it what you want", "Taylor Swift", "android.resource://com.example.group_10_melody_match/" + R.drawable.ciwyw_image,
                 "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
-        songs.add(new Song(0, "Champagne problem", "Taylor Swift", "cp_image",
+        songs.add(new Song(0, "Champagne problem", "Taylor Swift", "android.resource://com.example.group_10_melody_match/" + R.drawable.cp_image,
                 "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
-        songs.add(new Song(0, "Love Story", "Taylor Swift", "ciwyw_image",
+        songs.add(new Song(0, "Love Story", "Taylor Swift", "android.resource://com.example.group_10_melody_match/" + R.drawable.ls_image,
                 "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
 
         // Ed Sheeran songs
