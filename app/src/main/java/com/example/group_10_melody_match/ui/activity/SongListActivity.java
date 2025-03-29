@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.group_10_melody_match.R;
 import com.example.group_10_melody_match.data.database.AppDatabase;
 import com.example.group_10_melody_match.data.database.entity.Song;
+import com.example.group_10_melody_match.data.repository.SongRepository;
 import com.example.group_10_melody_match.ui.adapter.SongAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -34,6 +35,7 @@ public class SongListActivity extends AppCompatActivity {
     private TextView songsCountTextView;
     private FloatingActionButton fabShufflePlay;
 
+    SongRepository songRepository = new SongRepository(getApplication());
     private List<Song> currentSongList = new ArrayList<>();
 
     @Override
@@ -74,7 +76,7 @@ public class SongListActivity extends AppCompatActivity {
         // Set up RecyclerView
         recyclerView = findViewById(R.id.recycler_view_songs);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        songAdapter = new SongAdapter();
+        songAdapter = new SongAdapter(songRepository);
         recyclerView.setAdapter(songAdapter);
 
         // Set up shuffle play button

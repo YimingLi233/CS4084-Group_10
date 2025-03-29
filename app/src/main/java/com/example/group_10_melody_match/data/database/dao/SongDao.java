@@ -15,6 +15,12 @@ public interface SongDao {
     @Query("SELECT * FROM songs WHERE artistName = :artistName")
     LiveData<List<Song>> getSongsByArtistName(String artistName);
 
+    @Query("SELECT * FROM songs WHERE title = :title LIMIT 1")
+    LiveData<Song> getSongByTitle(String title); // Query by title to identify the song
+
+    @Query("UPDATE songs SET isLiked = :isLiked WHERE title = :title")
+    void updateSongLikeStatus(String title, boolean isLiked); // Update the like status of the song
+
     @Query("DELETE FROM songs")
     void deleteAll();
 }

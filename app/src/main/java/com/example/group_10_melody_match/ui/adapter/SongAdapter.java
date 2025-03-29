@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.group_10_melody_match.R;
 import com.example.group_10_melody_match.data.database.entity.Song;
+import com.example.group_10_melody_match.data.repository.SongRepository;
 import com.example.group_10_melody_match.ui.activity.SongPlayActivity;
 
 import java.util.ArrayList;
@@ -30,6 +31,12 @@ import java.util.List;
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
     private static final String TAG = "SongAdapter";
     private List<Song> songs = new ArrayList<>();
+
+    private SongRepository songRepository;
+
+    public SongAdapter(SongRepository songRepository) {
+        this.songRepository = songRepository;
+    }
 
     public void setSongs(List<Song> songs) {
         this.songs = songs != null ? songs : new ArrayList<>();
@@ -61,6 +68,23 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             } else {
                 holder.songImage.setImageResource(R.drawable.ic_launcher_foreground); // Default image if no URL
             }
+
+
+            // Set click listener for the like button to toggle the like status
+            holder.likeButton.setOnClickListener(v -> {
+                boolean newLikedStatus = !song.isLiked();
+                song.setLiked(newLikedStatus);
+
+                // Update like status in the database
+                songRepository.updateSongLikeStatus(song.getTitle(), newLikedStatus);
+                // Set the heart icon for the like button
+                if (song.isLiked()) {
+                    holder.likeButton.setImageResource(R.drawable.ic_like_filled); // Heart filled if liked
+                } else {
+                    holder.likeButton.setImageResource(R.drawable.ic_like_empty); // Heart empty if not liked
+                }
+                notifyItemChanged(position); // Notify to refresh the like button icon
+            });
 
             // Set click listener for the whole item to play the song
             holder.itemView.setOnClickListener(view -> {
@@ -132,12 +156,16 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         ImageView songImage;
         ImageButton btnPlaySong;
 
+        ImageButton likeButton; // Heart-shaped button for liking
+
         SongViewHolder(View itemView) {
             super(itemView);
             songTitle = itemView.findViewById(R.id.song_title);
             songArtist = itemView.findViewById(R.id.song_artist);
             songImage = itemView.findViewById(R.id.song_cover);
-            btnPlaySong = itemView.findViewById(R.id.btn_play_song);
+            btnPlaySong = itemView.findViewById(R.id.like_button);
+            likeButton = itemView.findViewById(R.id.like_button); // Ensure this button is in your XML
+
         }
     }
 }

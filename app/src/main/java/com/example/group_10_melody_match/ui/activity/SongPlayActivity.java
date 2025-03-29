@@ -1,5 +1,7 @@
 package com.example.group_10_melody_match.ui.activity;
 
+import static org.jetbrains.annotations.Nls.Capitalization.Title;
+
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,8 +14,12 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+
 import com.example.group_10_melody_match.R;
 import com.example.group_10_melody_match.data.database.entity.Song;
+import com.example.group_10_melody_match.data.repository.SongRepository;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +40,7 @@ public class SongPlayActivity extends AppCompatActivity {
     private ImageButton playPauseButton;
     private ImageButton prevButton;
     private ImageButton nextButton;
+    private ImageButton likeButton;
     private String songUrl;
     private boolean isPlaying = false;
 
@@ -64,6 +71,46 @@ public class SongPlayActivity extends AppCompatActivity {
         String songArtist = getIntent().getStringExtra("song_artist");
         String songImage = getIntent().getStringExtra("song_cover");
         songUrl = getIntent().getStringExtra("song_url");
+
+        // Set repository and fetch the song
+        SongRepository songRepository = new SongRepository(getApplication());
+        LiveData<Song> songLiveData = songRepository.getSongByTitle(songTitle);
+
+        likeButton = findViewById(R.id.like_button); // Reference the like button in the layout
+
+        // Observe the LiveData
+        songLiveData.observe(this, song -> {
+            if (song != null) {
+                // Set the like button based on the song's like status
+                runOnUiThread(() -> {
+                    if (song.isLiked()) {
+                        likeButton.setImageResource(R.drawable.ic_like_filled);
+                        Log.d(TAG, "Song is liked");
+                    } else {
+                        likeButton.setImageResource(R.drawable.ic_like_empty);
+                        Log.d(TAG, "Song is not liked");
+                    }
+                });
+
+                // set the click listener for the like button
+                likeButton.setOnClickListener(v -> {
+                    boolean newLikedStatus = !song.isLiked();
+                    song.setLiked(newLikedStatus);
+                    songRepository.updateSongLikeStatus(song.getTitle(), newLikedStatus); // update the database
+
+                    // Update the UI to reflect the new like status
+                    if (newLikedStatus) {
+                        likeButton.setImageResource(R.drawable.ic_like_filled);
+                        // Show notification
+                        Toast.makeText(this, R.string.song_liked, Toast.LENGTH_SHORT).show();
+                    } else {
+                        likeButton.setImageResource(R.drawable.ic_like_empty);
+                        Toast.makeText(this, R.string.song_unliked, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
 
         // Validate essential data
         if (songUrl == null || songUrl.isEmpty()) {
