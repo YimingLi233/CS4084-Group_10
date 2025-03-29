@@ -69,6 +69,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
                 holder.songImage.setImageResource(R.drawable.ic_launcher_foreground); // Default image if no URL
             }
 
+            // Set the like button state based on the song's like status
+            holder.likeButton.setImageResource(song.isLiked() ? R.drawable.ic_like_filled : R.drawable.ic_like_empty);
 
             // Set click listener for the like button to toggle the like status
             holder.likeButton.setOnClickListener(v -> {

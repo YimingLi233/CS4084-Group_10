@@ -85,6 +85,14 @@ public class SongListActivity extends AppCompatActivity {
             fabShufflePlay.setOnClickListener(v -> shufflePlay());
         }
 
+        // Observe the LiveData
+        songRepository.getAllSongs().observe(this, songs -> {
+            if (songs != null) {
+                songAdapter.setSongs(songs);
+            }
+        });
+
+
         // Load songs for the artist
         loadSongs();
     }
