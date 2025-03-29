@@ -8,14 +8,16 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.lifecycle.LiveData;
 
+import com.example.group_10_melody_match.R;
 import com.example.group_10_melody_match.data.database.dao.ArtistDao;
 import com.example.group_10_melody_match.data.database.dao.GenreDao;
 import com.example.group_10_melody_match.data.database.dao.ArtistGenreDao;
+import com.example.group_10_melody_match.data.database.dao.SongDao;
 import com.example.group_10_melody_match.data.database.entity.Artist;
 import com.example.group_10_melody_match.data.database.entity.Genre;
 import com.example.group_10_melody_match.data.database.entity.ArtistGenre;
+import com.example.group_10_melody_match.data.database.entity.Song;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,7 @@ import java.util.concurrent.Executors;
 /**
  * Room Database class
  */
-@Database(entities = { Artist.class, Genre.class, ArtistGenre.class }, version = 3, exportSchema = false)
+@Database(entities = { Artist.class, Genre.class, ArtistGenre.class, Song.class }, version = 8, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     // Singleton pattern
@@ -39,8 +41,12 @@ public abstract class AppDatabase extends RoomDatabase {
 
     // Get DAOs
     public abstract ArtistDao artistDao();
+
     public abstract GenreDao genreDao();
+
     public abstract ArtistGenreDao artistGenreDao();
+
+    public abstract SongDao songDao();
 
     /**
      * Get database instance (Singleton pattern)
@@ -74,6 +80,7 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
+            Log.d("Database", "✅ Room database created!");
 
             // Add initial data in a new thread
             databaseWriteExecutor.execute(() -> {
@@ -88,33 +95,50 @@ public abstract class AppDatabase extends RoomDatabase {
      */
     public static void initializeDatabase(AppDatabase db) {
         try {
+
+            Log.d("DatabaseInit", "✅ Initializing Database...");
+
             // Initialize genres first, as artist-genre relationships depend on genres
             initializeGenres(db);
-            
+
             // Wait a moment to ensure genres are initialized
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            
+
             // Then initialize artists
             initializeArtists(db);
-            
+
             // Wait a moment to ensure artists are initialized
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            
+
+            // Then initialize songs
+            initializeSongs(db);
+
+            // Wait a moment to ensure songs are initialized
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             // Finally initialize artist-genre relationships
             initializeArtistGenreRelations(db);
-            
+
             // Verify the initialization
             verifyArtistGenreRelations(db);
+
+            Log.d("DatabaseInit", "✅ Database Initialized Successfully!");
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("DatabaseInit", "❌ Database Initialization Failed", e);
+
         }
     }
 
@@ -179,11 +203,11 @@ public abstract class AppDatabase extends RoomDatabase {
     public static void initializeArtistGenreRelations(AppDatabase db) {
         try {
             ArtistGenreDao artistGenreDao = db.artistGenreDao();
-            
+
             // Clear existing relations
             artistGenreDao.deleteAll();
             Log.d("AppDatabase", "Cleared existing artist-genre relations");
-            
+
             // Get artists by name
             Artist taylorSwift = db.artistDao().getArtistByName("Taylor Swift");
             Artist edSheeran = db.artistDao().getArtistByName("Ed Sheeran");
@@ -195,7 +219,7 @@ public abstract class AppDatabase extends RoomDatabase {
             Artist duaLipa = db.artistDao().getArtistByName("Dua Lipa");
             Artist justinBieber = db.artistDao().getArtistByName("Justin Bieber");
             Artist ladyGaga = db.artistDao().getArtistByName("Lady Gaga");
-            
+
             // Get genres by name
             Genre pop = db.genreDao().getGenreByName("Pop");
             Genre rock = db.genreDao().getGenreByName("Rock");
@@ -204,10 +228,10 @@ public abstract class AppDatabase extends RoomDatabase {
             Genre kpop = db.genreDao().getGenreByName("K-Pop");
             Genre alternative = db.genreDao().getGenreByName("Alternative");
             Genre country = db.genreDao().getGenreByName("Country");
-            
+
             // Create relations
             List<ArtistGenre> relations = new ArrayList<>();
-            
+
             // Check if artist and genre exist before adding relationship
             if (taylorSwift != null && pop != null) {
                 relations.add(new ArtistGenre(taylorSwift.getId(), pop.getId()));
@@ -215,49 +239,49 @@ public abstract class AppDatabase extends RoomDatabase {
             if (taylorSwift != null && country != null) {
                 relations.add(new ArtistGenre(taylorSwift.getId(), country.getId()));
             }
-            
+
             if (edSheeran != null && pop != null) {
                 relations.add(new ArtistGenre(edSheeran.getId(), pop.getId()));
             }
-            
+
             if (billieEilish != null && pop != null) {
                 relations.add(new ArtistGenre(billieEilish.getId(), pop.getId()));
             }
             if (billieEilish != null && alternative != null) {
                 relations.add(new ArtistGenre(billieEilish.getId(), alternative.getId()));
             }
-            
+
             if (theWeeknd != null && rnb != null) {
                 relations.add(new ArtistGenre(theWeeknd.getId(), rnb.getId()));
             }
             if (theWeeknd != null && pop != null) {
                 relations.add(new ArtistGenre(theWeeknd.getId(), pop.getId()));
             }
-            
+
             if (bts != null && kpop != null) {
                 relations.add(new ArtistGenre(bts.getId(), kpop.getId()));
             }
-            
+
             if (arianaGrande != null && pop != null) {
                 relations.add(new ArtistGenre(arianaGrande.getId(), pop.getId()));
             }
-            
+
             if (drake != null && hipHop != null) {
                 relations.add(new ArtistGenre(drake.getId(), hipHop.getId()));
             }
-            
+
             if (duaLipa != null && pop != null) {
                 relations.add(new ArtistGenre(duaLipa.getId(), pop.getId()));
             }
-            
+
             if (justinBieber != null && pop != null) {
                 relations.add(new ArtistGenre(justinBieber.getId(), pop.getId()));
             }
-            
+
             if (ladyGaga != null && pop != null) {
                 relations.add(new ArtistGenre(ladyGaga.getId(), pop.getId()));
             }
-            
+
             // Only insert if relations list is not empty
             if (!relations.isEmpty()) {
                 artistGenreDao.insertAll(relations);
@@ -271,11 +295,104 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     }
 
+    public static void initializeSongs(AppDatabase db) {
+        Log.d("DatabaseInit", "Initializing Songs Table...");
+
+        SongDao songDao = db.songDao();
+        songDao.deleteAll();
+
+        List<Song> songs = new ArrayList<>();
+
+        // Taylor Swift songs (keep existing)
+        songs.add(new Song(0, "Call it what you want", "Taylor Swift", "android.resource://com.example.group_10_melody_match/" + R.drawable.ciwyw_image,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+        songs.add(new Song(0, "Champagne problem", "Taylor Swift", "android.resource://com.example.group_10_melody_match/" + R.drawable.cp_image,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+        songs.add(new Song(0, "Love Story", "Taylor Swift", "android.resource://com.example.group_10_melody_match/" + R.drawable.ls_image,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+
+        // Ed Sheeran songs
+        songs.add(new Song(0, "Shape of You", "Ed Sheeran", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+        songs.add(new Song(0, "Perfect", "Ed Sheeran", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+        songs.add(new Song(0, "Thinking Out Loud", "Ed Sheeran", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+
+        // Billie Eilish songs
+        songs.add(new Song(0, "Bad Guy", "Billie Eilish", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+        songs.add(new Song(0, "Ocean Eyes", "Billie Eilish", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+        songs.add(new Song(0, "When The Party's Over", "Billie Eilish", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+
+        // The Weeknd songs
+        songs.add(new Song(0, "Blinding Lights", "The Weeknd", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+        songs.add(new Song(0, "Starboy", "The Weeknd", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+        songs.add(new Song(0, "Save Your Tears", "The Weeknd", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+
+        // BTS songs
+        songs.add(new Song(0, "Dynamite", "BTS", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+        songs.add(new Song(0, "Butter", "BTS", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+        songs.add(new Song(0, "Boy With Luv", "BTS", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+
+        // Ariana Grande songs
+        songs.add(new Song(0, "Thank U, Next", "Ariana Grande", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+        songs.add(new Song(0, "7 Rings", "Ariana Grande", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+        songs.add(new Song(0, "Positions", "Ariana Grande", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+
+        // Drake songs
+        songs.add(new Song(0, "Hotline Bling", "Drake", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+        songs.add(new Song(0, "God's Plan", "Drake", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+        songs.add(new Song(0, "One Dance", "Drake", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+
+        // Dua Lipa songs
+        songs.add(new Song(0, "New Rules", "Dua Lipa", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+        songs.add(new Song(0, "Don't Start Now", "Dua Lipa", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+        songs.add(new Song(0, "Levitating", "Dua Lipa", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+
+        // Justin Bieber songs
+        songs.add(new Song(0, "Sorry", "Justin Bieber", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+        songs.add(new Song(0, "Love Yourself", "Justin Bieber", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+        songs.add(new Song(0, "Peaches", "Justin Bieber", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+
+        // Lady Gaga songs
+        songs.add(new Song(0, "Bad Romance", "Lady Gaga", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+        songs.add(new Song(0, "Poker Face", "Lady Gaga", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem));
+        songs.add(new Song(0, "Shallow", "Lady Gaga", "ic_launcher_foreground",
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want));
+
+        songDao.insertAll(songs);
+        Log.d("DatabaseInit", "Added " + songs.size() + " songs to the database");
+    }
+
     /**
      * Verify artist-genre relations after initialization
      */
     private static void verifyArtistGenreRelations(AppDatabase db) {
-        // This method is called from initializeDatabase which is already running in a background thread
+        // This method is called from initializeDatabase which is already running in a
+        // background thread
         // So we don't need to create another thread here
         try {
             // Check a few artists to make sure they have genres
@@ -284,13 +401,13 @@ public abstract class AppDatabase extends RoomDatabase {
                 int count = db.artistGenreDao().countGenresForArtist(taylorSwift.getId());
                 Log.d("AppDatabase", "Taylor Swift has " + count + " genres");
             }
-            
+
             Artist edSheeran = db.artistDao().getArtistByName("Ed Sheeran");
             if (edSheeran != null) {
                 int count = db.artistGenreDao().countGenresForArtist(edSheeran.getId());
                 Log.d("AppDatabase", "Ed Sheeran has " + count + " genres");
             }
-            
+
             // Count total relations
             int totalRelations = 0;
             List<Artist> allArtists = db.artistDao().getAllArtistsSync();
@@ -300,7 +417,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 }
             }
             Log.d("AppDatabase", "Total artist-genre relations: " + totalRelations);
-            
+
         } catch (Exception e) {
             Log.e("AppDatabase", "Error verifying artist-genre relations", e);
         }

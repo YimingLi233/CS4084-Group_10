@@ -1,6 +1,8 @@
 package com.example.group_10_melody_match.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.group_10_melody_match.R;
 import com.example.group_10_melody_match.data.database.entity.Artist;
+import com.example.group_10_melody_match.ui.activity.SongListActivity;
 
 import java.util.List;
 
@@ -52,7 +55,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
         
         holder.artistName.setText(artist.getName());
         holder.artistGenre.setText(artist.getGenre());
-        
+
         // Set artist image
         int resourceId = context.getResources().getIdentifier(
                 artist.getImageUrl(), "drawable", context.getPackageName());
@@ -62,8 +65,9 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
             // If image not found, use default image
             holder.artistImage.setImageResource(R.drawable.default_artist);
         }
-        
+
         // Set remove button click event
+
         if (holder.btnRemove != null) {
             holder.btnRemove.setOnClickListener(v -> {
                 if (onArtistRemoveListener != null) {
@@ -71,6 +75,21 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
                 }
             });
         }
+
+        // Click artist jump into their song list
+        holder.itemView.setOnClickListener(view -> {
+            Log.d("ArtistAdapter", "Clicked Artist: " + artist.getName());
+
+            if (artist.getName() == null || artist.getName().isEmpty()) {
+                Log.e("ArtistAdapter", "Error: artist name is NULL or EMPTY");
+                return;
+            }
+            Intent intent = new Intent(view.getContext(), SongListActivity.class);
+            intent.putExtra("artist_name", artist.getName());  // pass name
+            view.getContext().startActivity(intent);
+        });
+
+
     }
 
     @Override
