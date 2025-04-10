@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_recommendation"
+        android:icon="@android:drawable/ic_menu_search" 
+        android:title="Recommendation" />
+    <item
+        android:id="@+id/navigation_fav_artist"
+        android:icon="@android:drawable/star_on" 
+        android:title="Fav artist" />
+</menu> 

@@ -18,7 +18,7 @@
 <!--            android:name=".MainActivity"/>-->
 
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,9 +28,15 @@
         </activity>
 
         <activity
+            android:name=".ui.activity.MainActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.activity.AddArtistActivity"
             android:exported="false"
             android:label="@string/add_artist" />
+
+        <activity android:name=".RecommendationActivity" android:exported="false" />
 
         <activity android:name=".ui.activity.SongListActivity" />
 

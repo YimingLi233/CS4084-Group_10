@@ -1,6 +1,5 @@
 package com.example.group_10_melody_match.data.repository;
 
-
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
@@ -26,6 +25,10 @@ public class SongRepository {
         return songDao.getSongByTitle(title); // This will automatically run in a background thread if you use LiveData
     }
 
+    // Method to get songs by genre name
+    public LiveData<List<Song>> getSongsByGenreName(String genreName) {
+        return songDao.getSongsByGenreName(genreName);
+    }
 
     // Method to update the like status of a song
     public void updateSongLikeStatus(String title, boolean isLiked) {
