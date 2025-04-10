@@ -67,6 +67,12 @@ public class WelcomeActivity extends AppCompatActivity {
                             genreNames);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     genreSpinner.setAdapter(adapter);
+
+                    // Set "Pop" as the default selection if it exists
+                    int popIndex = genreNames.indexOf("Pop");
+                    if (popIndex >= 0) {
+                        genreSpinner.setSelection(popIndex);
+                    }
                 }
             }
         });
