@@ -85,7 +85,7 @@ public class FavArtActivity extends AppCompatActivity implements ArtistAdapter.O
         recyclerView.setAdapter(adapter);
 
         // Set reset button click event
-        findViewById(R.id.btn_reset).setOnClickListener(v -> resetDatabase());
+//        findViewById(R.id.btn_reset).setOnClickListener(v -> resetDatabase());
 
         // Observe LiveData from repository
         artistRepository.getFavoriteArtists().observe(this, artists -> {
