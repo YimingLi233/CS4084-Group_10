@@ -15,7 +15,7 @@
         <!--        android:theme="@style/Theme.Group_10_Melody_Match"-->
 
 <!--        <activity-->
-<!--            android:name=".MainActivity"/>-->
+<!--            android:name=".FavArtActivity"/>-->
 
         <activity
             android:name=".WelcomeActivity"
@@ -28,7 +28,7 @@
         </activity>
 
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".ui.activity.FavArtActivity"
             android:exported="false" />
 
         <activity

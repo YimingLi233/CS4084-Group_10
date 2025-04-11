@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import android.content.Intent;
-import com.example.group_10_melody_match.ui.activity.MainActivity; // Import MainActivity
+import com.example.group_10_melody_match.ui.activity.FavArtActivity; // Import FavArtActivity
 import com.example.group_10_melody_match.data.database.entity.Song; // Import your Song entity
 import com.example.group_10_melody_match.ui.adapter.SongAdapter; // Import your SongAdapter
 import com.example.group_10_melody_match.data.repository.SongRepository; // Import your SongRepository
@@ -39,6 +39,11 @@ public class RecommendationActivity extends AppCompatActivity {
         genreTitle = findViewById(R.id.genre_title);
         recommendationRecyclerView = findViewById(R.id.recommendation_recycler_view);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        // Synchronize selected item when activity starts
+        bottomNavigationView.setSelectedItemId(R.id.navigation_recommendation);
+
+        Log.d("RecommendationActivity", "BottomNavigationView selected item: " + bottomNavigationView.getSelectedItemId());
 
         // Instantiate the repository
         songRepository = new SongRepository(getApplication());
@@ -67,28 +72,44 @@ public class RecommendationActivity extends AppCompatActivity {
             // songAdapter.setSongs(new ArrayList<>()); // Clear adapter or show empty state
         }
 
-        // Set up BottomNavigationView listener
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.navigation_recommendation) {
-                    // Already on the recommendation screen
-                    return true;
-                } else if (itemId == R.id.navigation_fav_artist) {
-                    // Navigate to MainActivity (Favorite Artists)
-                    Intent intent = new Intent(RecommendationActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Log.d("RecommendationActivity", "Selected item id: " + item.getItemId()); // Log selected item
+
+            int itemId = item.getItemId();
+
+            // Avoid navigating to the same activity
+            if (itemId == R.id.navigation_recommendation) {
+                // If current activity is RecommendationActivity, don't navigate
+                if (!(getClass().getSimpleName().equals(RecommendationActivity.class.getSimpleName()))) {
+                    // If it's not the same, go to RecommendationActivity
+                    Intent intent = new Intent(RecommendationActivity.this, RecommendationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);  // Bring to front
                     startActivity(intent);
-                    return true;
                 }
-                return false;
+                item.setChecked(true); // Ensure the item is selected when navigating to RecommendationActivity
+                return true;
+            } else if (itemId == R.id.navigation_fav_artist) {
+                // If current activity is FavArtActivity, don't navigate
+                if (!(getClass().getSimpleName().equals(FavArtActivity.class.getSimpleName()))) {
+                    Intent intent = new Intent(RecommendationActivity.this, FavArtActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);  // Bring to front
+                    startActivity(intent);
+                }
+                return true;
             }
+            return false;
         });
 
         // Set the default selected item in the bottom navigation
         bottomNavigationView.setSelectedItemId(R.id.navigation_recommendation);
         Log.d(TAG, "onCreate finished");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Ensure the correct item is selected when returning to RecommendationActivity
+        bottomNavigationView.setSelectedItemId(R.id.navigation_recommendation);
     }
 
     private void setupRecyclerView() {
