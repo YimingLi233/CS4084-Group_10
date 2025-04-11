@@ -27,12 +27,15 @@ public class Song implements Parcelable {
     private String imageUrl;
     private String resourceUrl;
 
-    public Song(int id, String title, String artistName, String imageUrl, String resourceUrl) {
+    private boolean isLiked;  // New field for like status
+
+    public Song(int id, String title, String artistName, String imageUrl, String resourceUrl, boolean isLiked) {
         this.id = id;
         this.title = title;
         this.artistName = artistName;
         this.imageUrl = imageUrl;
         this.resourceUrl = resourceUrl;
+        this.isLiked = isLiked;
     }
 
     /**
@@ -47,6 +50,7 @@ public class Song implements Parcelable {
         artistName = in.readString();
         imageUrl = in.readString();
         resourceUrl = in.readString();
+        isLiked = in.readByte() != 0;  // Convert byte to boolean
     }
 
     /**
@@ -66,6 +70,15 @@ public class Song implements Parcelable {
             return new Song[size];
         }
     };
+
+    // Getter and Setter for 'isLiked'
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
 
     public int getId() {
         return id;
@@ -128,5 +141,6 @@ public class Song implements Parcelable {
         dest.writeString(artistName);
         dest.writeString(imageUrl);
         dest.writeString(resourceUrl);
+        dest.writeByte((byte) (isLiked ? 1 : 0));  // Save 'isLiked' as byte (1 or 0)
     }
 }

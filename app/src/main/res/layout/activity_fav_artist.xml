@@ -5,10 +5,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.MainActivity">
+    tools:context=".ui.activity.FavArtActivity">
 
+    <!-- Title TextView -->
     <TextView
-
         android:id="@+id/title_library"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,6 +21,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Commented Reset Button -->
+    <!--
     <Button
         android:id="@+id/btn_reset"
         android:layout_width="wrap_content"
@@ -30,7 +32,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/title_library"
         app:layout_constraintBottom_toBottomOf="@+id/title_library" />
+    -->
 
+    <!-- Subtitle TextView -->
     <TextView
         android:id="@+id/subtitle_favorite_artists"
         android:layout_width="wrap_content"
@@ -43,25 +47,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_library" />
 
+    <!-- RecyclerView for Artists -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_artists"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subtitle_favorite_artists"
-        tools:listitem="@layout/item_artist" />
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/subtitle_favorite_artists"
+    tools:listitem="@layout/item_artist" />
+
+    <!-- Floating Action Button moved to the red box position -->
+
+    <!-- Bottom Navigation -->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_artist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="15dp"
+        android:layout_marginTop="1dp"
         android:contentDescription="@string/add_artist"
         android:src="@android:drawable/ic_input_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title_library" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu="@menu/bottom_navigation_menu"
+        app:itemIconTint="@color/selector_item_color"
+        app:itemTextColor="@color/selector_item_color"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

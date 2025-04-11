@@ -133,6 +133,26 @@
                 android:src="@android:drawable/ic_media_next"
                 android:tint="@android:color/white" />
         </androidx.cardview.widget.CardView>
+
+        <!-- Adding the Like Button -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#6750A4">
+
+            <ImageButton
+                android:id="@+id/like_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/ic_like_empty"
+            android:contentDescription="Like Song"
+            android:tint="@android:color/darker_gray" />
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

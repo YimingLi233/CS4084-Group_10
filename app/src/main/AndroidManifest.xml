@@ -15,10 +15,10 @@
         <!--        android:theme="@style/Theme.Group_10_Melody_Match"-->
 
 <!--        <activity-->
-<!--            android:name=".MainActivity"/>-->
+<!--            android:name=".FavArtActivity"/>-->
 
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,9 +28,15 @@
         </activity>
 
         <activity
+            android:name=".ui.activity.FavArtActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.activity.AddArtistActivity"
             android:exported="false"
             android:label="@string/add_artist" />
+
+        <activity android:name=".RecommendationActivity" android:exported="false" />
 
         <activity android:name=".ui.activity.SongListActivity" />
 

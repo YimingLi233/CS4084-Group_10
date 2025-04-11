@@ -54,16 +54,17 @@
             app:cardCornerRadius="24dp"
             app:cardBackgroundColor="#6750A4"
             app:cardElevation="2dp">
-            
+
             <ImageButton
-                android:id="@+id/btn_play_song"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Play"
-                android:src="@android:drawable/ic_media_play"
-                android:tint="@android:color/white" />
+                android:id="@+id/like_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="0dp"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/ic_like_empty"
+            android:contentDescription="Like Song"
+            android:tint="@android:color/darker_gray" />
+
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
