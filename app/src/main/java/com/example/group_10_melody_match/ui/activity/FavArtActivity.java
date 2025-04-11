@@ -36,7 +36,7 @@ public class FavArtActivity extends AppCompatActivity implements ArtistAdapter.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_fav_artist);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 

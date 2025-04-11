@@ -4,30 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="20dp"
+    android:background="@drawable/back">
 
+    <!-- Welcome Title with shadow for better readability -->
     <TextView
         android:id="@+id/welcome_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
         android:text="Welcome to Melody match!"
-        android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/selectedColor"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:shadowColor="#66000000"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="3"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="100dp"/>
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Genre Selection Label -->
     <TextView
         android:id="@+id/select_genre_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Please select a genre you like:"
-        android:textSize="18sp"
+        android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/welcome_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="60dp"/>
 
+    <!-- Spinner with centered text and white background -->
     <Spinner
         android:id="@+id/genre_spinner"
         android:layout_width="0dp"
@@ -36,18 +48,23 @@
         app:layout_constraintTop_toBottomOf="@id/select_genre_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
+        android:gravity="center"
+        android:padding="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:popupBackground="@drawable/spinner_popup_background"/>
 
+    <!-- Start Journey Button with rounded corners -->
     <Button
         android:id="@+id/start_journey_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start Journey"
+        android:textColor="@android:color/white"
         app:layout_constraintTop_toBottomOf="@id/genre_spinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"/>
+        android:layout_marginTop="50dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout> 
+</androidx.constraintlayout.widget.ConstraintLayout>

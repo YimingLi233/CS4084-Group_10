@@ -1,7 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Basic Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="selectedColor">#6750A4</color>  <!-- Active (selected) color -->
-    <color name="unselectedColor">#B0B0B0</color>  <!-- Inactive (unselected) color -->
+    <color name="blue">#3F51B5</color>
+    <color name="grey">#FFF9F9</color>
+    <color name="selectedColor">#6750A4</color> <!-- Active (selected) color -->
+    <color name="unselectedColor">#B0B0B0</color> <!-- Inactive (unselected) color -->
+
+    <!-- Primary Colors -->
+    <color name="primary">#2196F3</color> <!-- Blue -->
+    <color name="primary_dark">#1976D2</color> <!-- Dark Blue -->
+    <color name="primary_light">#BBDEFB</color> <!-- Light Blue -->
+
+    <!-- Secondary Colors -->
+    <color name="secondary">#FF4081</color> <!-- Pink -->
+    <color name="secondary_dark">#F50057</color> <!-- Dark Pink -->
+    <color name="secondary_light">#FF80AB</color> <!-- Light Pink -->
+
+    <!-- Background Colors -->
+    <color name="background">#FFFFFF</color> <!-- White -->
+    <color name="background_dark">#121212</color> <!-- Dark Background -->
+
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color> <!-- Primary Text Color -->
+    <color name="text_secondary">#757575</color> <!-- Secondary Text Color -->
+    <color name="text_hint">#BDBDBD</color> <!-- Hint Text Color -->
+
+    <!-- Action Colors -->
+    <color name="action_text">#4CAF50</color> <!-- Green for Actions -->
+    <color name="action_text_pressed">#388E3C</color> <!-- Dark Green for Pressed Actions -->
+
+    <!-- Red and Warning Colors -->
+    <color name="error">#F44336</color> <!-- Red -->
+    <color name="warning">#FFEB3B</color> <!-- Yellow -->
+
+    <!-- Purple and Related Shades -->
+    <color name="purple">#9C27B0</color> <!-- Purple -->
+    <color name="purple_dark">#7B1FA2</color> <!-- Dark Purple -->
+    <color name="purple_light">#E1BEE7</color> <!-- Light Purple -->
+
+    <!-- Green and Related Shades -->
+    <color name="green">#4CAF50</color> <!-- Green -->
+    <color name="green_dark">#388E3C</color> <!-- Dark Green -->
+    <color name="green_light">#A5D6A7</color> <!-- Light Green -->
+
+    <!-- Gray and Light Gray -->
+    <color name="gray">#9E9E9E</color> <!-- Gray -->
+    <color name="light_gray">#F5F5F5</color> <!-- Light Gray -->
+
+    <!-- Blue Shades -->
+    <color name="light_blue">#81D4FA</color> <!-- Light Blue -->
+    <color name="dark_blue">#1565C0</color> <!-- Dark Blue -->
+
+    <!-- Accent Colors -->
+    <color name="accent">#FF4081</color> <!-- Accent Pink -->
+
+    <!-- Black and White Variants -->
+    <color name="black_50">#80000000</color> <!-- Black with 50% opacity -->
+    <color name="white_50">#80FFFFFF</color> <!-- White with 50% opacity -->
 </resources>
