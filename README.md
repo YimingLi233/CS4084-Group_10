@@ -69,7 +69,7 @@ group_10_melody_match/
 
 1. Clone this repo:
    ```bash
-   git clone https://github.com/yourusername/melody-match.git
+   git clone https://github.com/YimingLi233/CS4084-Group_10.git
    ```
 
 2. Open in Android Studio and let Gradle sync.
