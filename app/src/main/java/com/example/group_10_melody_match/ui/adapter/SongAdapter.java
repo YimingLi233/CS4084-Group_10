@@ -52,57 +52,39 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull SongViewHolder holder, int position) {
-        try {
-            Song song = songs.get(position);
+        Song song = songs.get(position);
 
-            // Set text safely
-            holder.songTitle.setText(song.getTitle() != null ? song.getTitle() : "Unknown Title");
-            holder.songArtist.setText(song.getArtistName() != null ? song.getArtistName() : "Unknown Artist");
+        holder.songTitle.setText(song.getTitle() != null ? song.getTitle() : "Unknown Title");
+        holder.songArtist.setText(song.getArtistName() != null ? song.getArtistName() : "Unknown Artist");
 
-            // Set the song cover image using the imageUrl
-            if (song.getImageUrl() != null && !song.getImageUrl().isEmpty()) {
-                // Extract the image name from the full URL (excluding android.resource://...)
-                String imageName = song.getImageUrl().replace("android.resource://com.example.group_10_melody_match/", "");
-                int imageResId = holder.itemView.getContext().getResources().getIdentifier(imageName, "drawable", holder.itemView.getContext().getPackageName());
-                holder.songImage.setImageResource(imageResId != 0 ? imageResId : R.drawable.ic_launcher_foreground); // Default image if not found
-            } else {
-                holder.songImage.setImageResource(R.drawable.ic_launcher_foreground); // Default image if no URL
-            }
-
-            // Set the like button state based on the song's like status
-            holder.likeButton.setImageResource(song.isLiked() ? R.drawable.ic_like_filled : R.drawable.ic_like_empty);
-
-            // Set click listener for the like button to toggle the like status
-            holder.likeButton.setOnClickListener(v -> {
-                boolean newLikedStatus = !song.isLiked();
-                song.setLiked(newLikedStatus);
-
-                // Update like status in the database
-                songRepository.updateSongLikeStatus(song.getTitle(), newLikedStatus);
-                // Set the heart icon for the like button
-                if (song.isLiked()) {
-                    holder.likeButton.setImageResource(R.drawable.ic_like_filled); // Heart filled if liked
-                } else {
-                    holder.likeButton.setImageResource(R.drawable.ic_like_empty); // Heart empty if not liked
-                }
-                notifyItemChanged(position); // Notify to refresh the like button icon
-            });
-
-            // Set click listener for the whole item to play the song
-            holder.itemView.setOnClickListener(view -> {
-                playSong(view, song, position);
-            });
-
-            // Set click listener for the play button
-            if (holder.btnPlaySong != null) {
-                holder.btnPlaySong.setOnClickListener(view -> {
-                    playSong(view, song, position);
-                });
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error binding song at position " + position, e);
+        if (song.getImageUrl() != null && !song.getImageUrl().isEmpty()) {
+            String imageName = song.getImageUrl().replace("android.resource://com.example.group_10_melody_match/", "");
+            int imageResId = holder.itemView.getContext().getResources().getIdentifier(imageName, "drawable", holder.itemView.getContext().getPackageName());
+            holder.songImage.setImageResource(imageResId != 0 ? imageResId : R.drawable.ic_launcher_foreground);
+        } else {
+            holder.songImage.setImageResource(R.drawable.ic_launcher_foreground);
         }
+
+        // Set the like button state based on the song's liked status
+        holder.likeButton.setImageResource(song.isLiked() ? R.drawable.ic_like_filled : R.drawable.ic_like_empty);
+
+        // To handle the like button click
+        holder.likeButton.setOnClickListener(v -> {
+            boolean newLikedStatus = !song.isLiked();
+            song.setLiked(newLikedStatus);
+            songRepository.updateSongLikeStatus(song.getTitle(), newLikedStatus);
+            holder.likeButton.setImageResource(newLikedStatus ? R.drawable.ic_like_filled : R.drawable.ic_like_empty);
+            notifyItemChanged(position);
+        });
+
+        // Set the click listener for the entire item
+        holder.itemView.setOnClickListener(view -> {
+            if (view != holder.likeButton) {
+                playSong(view, song, position);
+            }
+        });
     }
+
 
 
     /**
@@ -156,18 +138,14 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     static class SongViewHolder extends RecyclerView.ViewHolder {
         TextView songTitle, songArtist;
         ImageView songImage;
-        ImageButton btnPlaySong;
-
-        ImageButton likeButton; // Heart-shaped button for liking
+        ImageButton likeButton;
 
         SongViewHolder(View itemView) {
             super(itemView);
             songTitle = itemView.findViewById(R.id.song_title);
             songArtist = itemView.findViewById(R.id.song_artist);
             songImage = itemView.findViewById(R.id.song_cover);
-            btnPlaySong = itemView.findViewById(R.id.like_button);
-            likeButton = itemView.findViewById(R.id.like_button); // Ensure this button is in your XML
-
+            likeButton = itemView.findViewById(R.id.like_button);
         }
     }
 }
