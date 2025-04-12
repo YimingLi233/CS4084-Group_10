@@ -26,6 +26,12 @@
 - 🧹 **Database Reset (dev only)**  
   Reset the database to its initial state with a single tap (currently commented out for production).
 
+- 🔀 **Shuffle Play Button**  
+  A dedicated button for "Shuffle Play" of songs in the song list — a future enhancement for randomized music experience.
+
+- 🗑 **Remove favorite artist with one tap**  
+  Tap the delete icon to remove an artist card from the favorites list instantly.
+
 ## 🏗 Architecture
 
 - **MVVM Pattern**  
@@ -65,6 +71,8 @@ group_10_melody_match/
 - Android device or emulator (API level 24+)
 - Java 8 or above
 
+
+
 ### Installation
 
 1. Clone this repo:
@@ -80,7 +88,7 @@ group_10_melody_match/
 
 | Welcome Page | Recommendation List | Favorite Artists |
 |--------------|---------------------|------------------|
-| ![Welcome](https://github.com/user-attachments/assets/ed37ee63-6fea-4513-ad01-e59143ceae80) | ![Songs](https://github.com/user-attachments/assets/75ac296c-cea6-4511-a4c9-b0b14bc044ec) | ![Fav](https://github.com/user-attachments/assets/cbd7a08d-b09b-485c-9a67-885f50f2e4a1) |
+| ![Welcome](https://github.com/user-attachments/assets/6461519b-740f-4a21-a893-1e92fafbefe7) | ![Songs](https://github.com/user-attachments/assets/5bb16716-c448-473a-96f8-7b1ae71eca25) | ![Fav](https://github.com/user-attachments/assets/cbd7a08d-b09b-485c-9a67-885f50f2e4a1) |
 
 
 
