@@ -13,6 +13,7 @@ import android.widget.Spinner;
 
 import com.example.group_10_melody_match.data.database.AppDatabase;
 import com.example.group_10_melody_match.data.database.entity.Genre;
+import com.example.group_10_melody_match.data.repository.ArtistRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,12 @@ public class WelcomeActivity extends AppCompatActivity {
 
         genreSpinner = findViewById(R.id.genre_spinner);
         startJourneyButton = findViewById(R.id.start_journey_button);
+
+        // ensure that the database is populated
+//        ArtistRepository ar = new ArtistRepository(getApplication());
+        //ar.resetDatabase();
+        new ArtistRepository(getApplication()).resetDatabase();
+
 
         // Get database instance
         db = AppDatabase.getDatabase(getApplicationContext());
