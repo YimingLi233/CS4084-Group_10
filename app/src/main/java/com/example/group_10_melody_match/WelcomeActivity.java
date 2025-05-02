@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -40,7 +41,14 @@ public class WelcomeActivity extends AppCompatActivity {
         startJourneyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String selectedGenre = genreSpinner.getSelectedItem().toString();
+                Object selectedItem = genreSpinner.getSelectedItem();
+                if (selectedItem == null) {
+                    // This should never happen, but just in case
+                    android.util.Log.e("WelcomeActivity", "❌ genreSpinner.getSelectedItem() is null");
+                    return;
+                }
+                String selectedGenre = selectedItem.toString();
+
                 Intent intent = new Intent(WelcomeActivity.this, RecommendationActivity.class);
                 intent.putExtra("SELECTED_GENRE", selectedGenre);
                 startActivity(intent);
@@ -67,6 +75,7 @@ public class WelcomeActivity extends AppCompatActivity {
                             genreNames);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     genreSpinner.setAdapter(adapter);
+                    Log.d("WelcomeActivity", "✅ Spinner loaded with genres, first item: " + genreSpinner.getSelectedItem());
 
                     // Set "Pop" as the default selection if it exists
                     int popIndex = genreNames.indexOf("Pop");
@@ -74,6 +83,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         genreSpinner.setSelection(popIndex);
                     }
                 }
+
             }
         });
     }

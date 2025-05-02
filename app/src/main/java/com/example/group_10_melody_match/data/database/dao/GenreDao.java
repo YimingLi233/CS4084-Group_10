@@ -49,4 +49,8 @@ public interface GenreDao {
      */
     @Query("DELETE FROM genres")
     void deleteAll();
+
+    @Query("SELECT COUNT(*) FROM genres")
+    int getCountSync();
+
 } 
