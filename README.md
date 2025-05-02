@@ -112,4 +112,4 @@ This project was developed as part of a group assignment for CS4084.
 - **Yiming Li** — 23039248
 - **Ping Lin** — 23086505
 - **Yuexi Chen** — 23005505
-- **Stephen** — 0444464
+- **Stephen O'Brien** — 0444464
