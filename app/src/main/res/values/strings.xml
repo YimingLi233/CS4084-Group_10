@@ -5,9 +5,9 @@
     <string name="artist_name">Artist Name</string>
     <string name="artist_genre">Music Genre</string>
     <string name="artist_image">Artist Image</string>
-    <string name="library">Music Library</string>
-    <string name="favorite_artists">Favorite Artists</string>
-    <string name="reset_data">Reset Data</string>
+    <string name="library">Artist Library</string>
+    <string name="favorite_artists">Click + button to add artists you like</string>
+    <string name="reset_data">System recommend</string>
     <string name="data_reset">Data has been reset</string>
     <string name="add">Add</string>
     <string name="remove">Remove</string>

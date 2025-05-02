@@ -5,32 +5,41 @@
 
 ## ✨ Features
 
-- 🎧 **Genre-Based Music Recommendation**  
-  Users can choose a genre (e.g., Pop, Classical) and view a curated list of songs from that genre.
+- 🎨 **Feature 1: Favorite Artist List Display**  
+  Displays a list of favorite artists with visual cards.
 
-- 💜 **Favorite Artists Management**  
-  Easily mark artists as favorites and manage them through a visually appealing library interface.
+- 🔍 **Feature 2: Search Artist When Adding to Favorite List**  
+  Search artists by name and add them to the favorites list.
 
-- 🌈 **Interactive Like Button**  
-  Songs can be liked or unliked, and the like status is synced with the database in real-time.
+- 🧾 **Feature 3: Available Artists Display**  
+  Shows a full list of available artists to choose from.
 
-- 🌊 **Beautiful Welcome Page**  
-  A themed welcome screen with background image and centered layout elements, including spinner selection and styled buttons.
+- ▶️ **Feature 4: Song Play**  
+  Play selected songs from the list.
 
-- 🔄 **Bottom Navigation Bar**  
-  Persistent bottom navigation across activities, with proper state synchronization and animated selection indicator.
+- 🗑 **Feature 5: Delete Favorite Artist from List**  
+  Remove an artist from favorites with one tap.
 
-- ➕ **Floating Action Button (FAB)**  
-  Add new favorite artists quickly via a "+" button, positioned conveniently on the top-right corner for easy access.
+- ⏮⏯⏭ **Feature 6: Prev/Next Button in Song Play Page**  
+  Song player page includes previous, play/pause, and next buttons.
 
-- 🧹 **Database Reset (dev only)**  
-  Reset the database to its initial state with a single tap (currently commented out for production).
+- 🌊 **Feature 7: App Entrance Page**  
+  Welcome page with genre selection before entering the app.
 
-- 🔀 **Shuffle Play Button**  
-  A dedicated button for "Shuffle Play" of songs in the song list — a future enhancement for randomized music experience.
+- 🧭 **Feature 8: Bottom Route Page**  
+  Bottom navigation bar for seamless screen switching.
 
-- 🗑 **Remove favorite artist with one tap**  
-  Tap the delete icon to remove an artist card from the favorites list instantly.
+- 🎵 **Feature 9: Recommendation Page**  
+  Displays recommended songs based on selected genre.
+
+- 💜 **Feature 10: Mark LIKE on Song Item**  
+  Tap the heart icon to like or unlike a song.
+
+- 🔀 **Feature 11: Shuffle Play on Song List Page**  
+  Shuffle play button enables random playback from the song list.
+
+- ➕ **Feature 12: Add Favorite Artist to List**  
+  Add an artist to your favorite list using the "Add" button.
 
 ## 🏗 Architecture
 
@@ -72,7 +81,6 @@ group_10_melody_match/
 - Java 8 or above
 
 
-
 ### Installation
 
 1. Clone this repo:
@@ -88,10 +96,20 @@ group_10_melody_match/
 
 | Welcome Page | Recommendation List | Favorite Artists |
 |--------------|---------------------|------------------|
-| ![Welcome](https://github.com/user-attachments/assets/6461519b-740f-4a21-a893-1e92fafbefe7) | ![Songs](https://github.com/user-attachments/assets/5bb16716-c448-473a-96f8-7b1ae71eca25) | ![Fav](https://github.com/user-attachments/assets/cbd7a08d-b09b-485c-9a67-885f50f2e4a1) |
+| ![Welcome](https://github.com/user-attachments/assets/0f8788ee-c2eb-4b14-90d4-1339be8a3265) | ![Songs](https://github.com/user-attachments/assets/669dd4f0-1cd2-48fe-bde3-b6fc4eca6b51) | ![Fav](https://github.com/user-attachments/assets/36bbe082-7c0b-4f32-8e5d-78cc2c59610b) |
 
 
 
 ## 📝 License
 
 This project is licensed under the MIT License.
+
+
+## 👨‍💻 Authors
+
+This project was developed as part of a group assignment for CS4084.
+
+- **Yiming Li** — 23039248
+- **Ping Lin** — 23086505
+- **Yuexi Chen** — 23005505
+- **Stephen** — 0444464
