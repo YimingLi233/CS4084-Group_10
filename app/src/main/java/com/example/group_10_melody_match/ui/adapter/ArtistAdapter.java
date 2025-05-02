@@ -57,17 +57,26 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
         holder.artistGenre.setText(artist.getGenre());
 
         // Set artist image
-        int resourceId = context.getResources().getIdentifier(
-                artist.getImageUrl(), "drawable", context.getPackageName());
-        if (resourceId != 0) {
-            holder.artistImage.setImageResource(resourceId);
+        String artistName = artist.getName();
+        if (artistName != null && !artistName.isEmpty()) {
+            String resourceName = "artist_" + artistName.toLowerCase().replace(" ", "_");
+            Log.d("ArtistAdapter", "Trying to load image: " + resourceName);
+
+            int resourceId = context.getResources().getIdentifier(
+                    resourceName, "drawable", context.getPackageName());
+
+            if (resourceId != 0) {
+                holder.artistImage.setImageResource(resourceId);
+            } else {
+                Log.w("ArtistAdapter", "Image not found for: " + resourceName + ", using default.");
+                holder.artistImage.setImageResource(R.drawable.default_artist);
+            }
         } else {
-            // If image not found, use default image
+            Log.w("ArtistAdapter", "Artist name is null or empty, using default image.");
             holder.artistImage.setImageResource(R.drawable.default_artist);
         }
 
         // Set remove button click event
-
         if (holder.btnRemove != null) {
             holder.btnRemove.setOnClickListener(v -> {
                 if (onArtistRemoveListener != null) {
@@ -88,8 +97,6 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
             intent.putExtra("artist_name", artist.getName());  // pass name
             view.getContext().startActivity(intent);
         });
-
-
     }
 
     @Override
