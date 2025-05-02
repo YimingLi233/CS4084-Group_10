@@ -339,93 +339,93 @@ public abstract class AppDatabase extends RoomDatabase {
                 "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem, false));
         songs.add(new Song(0, "Love Story", "Taylor Swift",
                 "android.resource://com.example.group_10_melody_match/" + R.drawable.ciwyw_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.positions,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.love_story,
                 false));
 
         // Ed Sheeran songs
         songs.add(new Song(0, "Shape of You", "Ed Sheeran", "android.resource://com.example.group_10_melody_match/" + R.drawable.soy_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.shape_of_you,
                 false));
         songs.add(new Song(0, "Perfect", "Ed Sheeran", "android.resource://com.example.group_10_melody_match/" + R.drawable.soy_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem, false));
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.perfect, false));
         songs.add(new Song(0, "Thinking Out Loud", "Ed Sheeran", "android.resource://com.example.group_10_melody_match/" + R.drawable.soy_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.positions,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.thinking_out_loud,
                 false));
 
         // Billie Eilish songs
         songs.add(new Song(0, "Bad Guy", "Billie Eilish", "android.resource://com.example.group_10_melody_match/" + R.drawable.bg_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem, false));
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.bad_guy, false));
         songs.add(new Song(0, "Ocean Eyes", "Billie Eilish", "android.resource://com.example.group_10_melody_match/" + R.drawable.bg_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.ocean_eyes,
                 false));
         songs.add(new Song(0, "When The Party's Over", "Billie Eilish", "android.resource://com.example.group_10_melody_match/" + R.drawable.bg_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.positions, false));
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.when_the_partys_over, false));
 
         // The Weeknd songs
         songs.add(new Song(0, "Blinding Lights", "The Weeknd", "android.resource://com.example.group_10_melody_match/" + R.drawable.bl_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.blinding_lights,
                 false));
         songs.add(new Song(0, "Starboy", "The Weeknd", "android.resource://com.example.group_10_melody_match/" + R.drawable.bl_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem, false));
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.just_drive, false));
         songs.add(new Song(0, "Save Your Tears", "The Weeknd", "android.resource://com.example.group_10_melody_match/" + R.drawable.bl_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.positions,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.axel_f,
                 false));
 
         // BTS songs
         songs.add(new Song(0, "Dynamite", "BTS", "android.resource://com.example.group_10_melody_match/" + R.drawable.d_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem, false));
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.dynamite, false));
         songs.add(new Song(0, "Butter", "BTS", "android.resource://com.example.group_10_melody_match/" + R.drawable.d_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.butter,
                 false));
         songs.add(new Song(0, "Boy With Luv", "BTS", "android.resource://com.example.group_10_melody_match/" + R.drawable.d_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.positions, false));
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.celebration, false));
 
         // Ariana Grande songs
         songs.add(new Song(0, "Thank U, Next", "Ariana Grande", "android.resource://com.example.group_10_melody_match/" + R.drawable.tun_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.thank_u_next,
                 false));
         songs.add(new Song(0, "7 Rings", "Ariana Grande", "android.resource://com.example.group_10_melody_match/" + R.drawable.tun_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem, false));
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.s_rings, false));
         songs.add(new Song(0, "Positions", "Ariana Grande", "android.resource://com.example.group_10_melody_match/" + R.drawable.tun_image,
                 "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.positions,
                 false));
 
         // Drake songs
         songs.add(new Song(0, "Hotline Bling", "Drake", "android.resource://com.example.group_10_melody_match/" + R.drawable.hb_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem, false));
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.hotline_bling, false));
         songs.add(new Song(0, "God's Plan", "Drake", "android.resource://com.example.group_10_melody_match/" + R.drawable.hb_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.picking_up_all_the_pieces,
                 false));
         songs.add(new Song(0, "One Dance", "Drake", "android.resource://com.example.group_10_melody_match/" + R.drawable.hb_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.positions, false));
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.one_dance, false));
 
         // Dua Lipa songs
         songs.add(new Song(0, "New Rules", "Dua Lipa", "android.resource://com.example.group_10_melody_match/" + R.drawable.nr_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.new_rules,
                 false));
         songs.add(new Song(0, "Don't Start Now", "Dua Lipa", "android.resource://com.example.group_10_melody_match/" + R.drawable.nr_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem, false));
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.dont_start_now, false));
         songs.add(new Song(0, "Levitating", "Dua Lipa", "android.resource://com.example.group_10_melody_match/" + R.drawable.nr_image,
                 "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.positions,
                 false));
 
         // Justin Bieber songs
         songs.add(new Song(0, "Sorry", "Justin Bieber", "android.resource://com.example.group_10_melody_match/" + R.drawable.sr_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem, false));
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.sorry, false));
         songs.add(new Song(0, "Love Yourself", "Justin Bieber", "android.resource://com.example.group_10_melody_match/" + R.drawable.sr_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.love_yourself,
                 false));
         songs.add(new Song(0, "Peaches", "Justin Bieber", "android.resource://com.example.group_10_melody_match/" + R.drawable.sr_image,
                 "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.positions, false));
 
         // Lady Gaga songs
         songs.add(new Song(0, "Bad Romance", "Lady Gaga", "android.resource://com.example.group_10_melody_match/" + R.drawable.br_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.call_it_what_you_want,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.bad_romance,
                 false));
         songs.add(new Song(0, "Poker Face", "Lady Gaga", "android.resource://com.example.group_10_melody_match/" + R.drawable.br_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.champagne_problem, false));
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.poker_face, false));
         songs.add(new Song(0, "Shallow", "Lady Gaga", "android.resource://com.example.group_10_melody_match/" + R.drawable.br_image,
-                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.positions,
+                "android.resource://" + "com.example.group_10_melody_match" + "/" + R.raw.shallow,
                 false));
 
         songDao.insertAll(songs);
