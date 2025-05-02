@@ -92,7 +92,6 @@ public class SongListActivity extends AppCompatActivity {
             }
         });
 
-
         // Load songs for the artist
         loadSongs();
     }
@@ -119,6 +118,9 @@ public class SongListActivity extends AppCompatActivity {
         Random random = new Random();
         int randomPosition = random.nextInt(currentSongList.size());
         Song randomSong = currentSongList.get(randomPosition);
+
+        // Show a toast message to inform the user
+        Toast.makeText(this, "Playing: " + randomSong.getTitle(), Toast.LENGTH_SHORT).show();
 
         // Start the song play activity
         Intent intent = new Intent(this, SongPlayActivity.class);

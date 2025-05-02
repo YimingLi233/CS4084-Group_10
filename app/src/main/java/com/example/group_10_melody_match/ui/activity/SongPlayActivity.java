@@ -111,7 +111,6 @@ public class SongPlayActivity extends AppCompatActivity {
             }
         });
 
-
         // Validate essential data
         if (songUrl == null || songUrl.isEmpty()) {
             Log.e(TAG, "No valid song URL provided");
@@ -156,20 +155,16 @@ public class SongPlayActivity extends AppCompatActivity {
             artistTextView.setText(songArtist);
         }
 
-
-
         if (songImage != null && !songImage.isEmpty()) {
 
-            Log.d(TAG, "songImage: " + songImage);  // Log songImage
+            Log.d(TAG, "songImage: " + songImage); // Log songImage
 
             String imageName = songImage.replace("android.resource://com.example.group_10_melody_match/", "");
-            Log.d(TAG, "imageName extracted: " + imageName);  // Log imageName
+            Log.d(TAG, "imageName extracted: " + imageName); // Log imageName
 
             // Get the resource ID of the image
             int imageResId = getResources().getIdentifier(imageName, "drawable", getPackageName());
-            Log.d(TAG, "imageResId: " + imageResId);  // Log imageResId
-
-
+            Log.d(TAG, "imageResId: " + imageResId); // Log imageResId
 
             if (imageResId != 0) {
                 albumCover.setImageResource(imageResId);
@@ -183,8 +178,6 @@ public class SongPlayActivity extends AppCompatActivity {
             Log.d(TAG, "songImage is null or empty, using default image.");
 
         }
-
-
 
         // Initialize MediaPlayer
         initializeMediaPlayer();
@@ -242,6 +235,13 @@ public class SongPlayActivity extends AppCompatActivity {
         try {
             mediaPlayer.setDataSource(this, android.net.Uri.parse(songUrl));
             mediaPlayer.prepare();
+
+            // Automatically start playing the song
+            mediaPlayer.start();
+            isPlaying = true;
+            if (playPauseButton != null) {
+                playPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+            }
         } catch (IOException e) {
             Log.e(TAG, "Error initializing media player", e);
             Toast.makeText(this, "Error playing song", Toast.LENGTH_SHORT).show();
