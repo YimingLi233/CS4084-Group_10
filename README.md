@@ -81,7 +81,6 @@ group_10_melody_match/
 - Java 8 or above
 
 
-
 ### Installation
 
 1. Clone this repo:
@@ -97,7 +96,7 @@ group_10_melody_match/
 
 | Welcome Page | Recommendation List | Favorite Artists |
 |--------------|---------------------|------------------|
-| ![Welcome](https://github.com/user-attachments/assets/6461519b-740f-4a21-a893-1e92fafbefe7) | ![Songs](https://github.com/user-attachments/assets/2cf0024b-e272-4095-a63a-57bb8492a61b) | ![Fav](https://github.com/user-attachments/assets/9a7fc774-1540-487b-a6b8-30d20b457040) |
+| ![Welcome](https://github.com/user-attachments/assets/0f8788ee-c2eb-4b14-90d4-1339be8a3265) | ![Songs](https://github.com/user-attachments/assets/669dd4f0-1cd2-48fe-bde3-b6fc4eca6b51) | ![Fav](https://github.com/user-attachments/assets/36bbe082-7c0b-4f32-8e5d-78cc2c59610b) |
 
 
 
